@@ -6,6 +6,11 @@
         public string Name, ID;
 
         // Constructors
+        public Team(string name)
+        {
+            Name = name;
+        }
+
         public Team(string name, string id)
         {
             Name = name;

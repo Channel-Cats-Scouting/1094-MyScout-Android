@@ -12,8 +12,8 @@ namespace MyScout.Android.UI
     public class TeamActivity : Activity
     {
         // Variables/Constants
+        public static TeamAdapter TeamListAdapter;
         protected RecyclerView teamList;
-        protected TeamAdapter teamListAdapter;
         protected Button teamAddBtn;
 
         // GUI Events
@@ -31,10 +31,10 @@ namespace MyScout.Android.UI
             var layoutManager = new LinearLayoutManager(this);
             teamList.SetLayoutManager(layoutManager);
 
-            teamListAdapter = new TeamAdapter();
-            teamList.SetAdapter(teamListAdapter);
+            TeamListAdapter = new TeamAdapter(this);
+            teamList.SetAdapter(TeamListAdapter);
 
-            var callback = new TeamEntryTouchHelper(teamListAdapter);
+            var callback = new TeamEntryTouchHelper(TeamListAdapter);
             var itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.AttachToRecyclerView(teamList);
 
@@ -45,7 +45,7 @@ namespace MyScout.Android.UI
         private void TeamAddBtn_Click(object sender, EventArgs e)
         {
             // TODO: Bring up the team add dialog instead of running this debug code
-            teamListAdapter.Add(new Team($"Team {MainActivity.Teams.Count+1}",
+            TeamListAdapter.Add(new Team($"Team {MainActivity.Teams.Count+1}",
                 (MainActivity.Teams.Count + 1000).ToString()));
         }
     }

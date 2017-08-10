@@ -1,4 +1,5 @@
-﻿using Android.Support.V7.Widget;
+﻿using Android.Content;
+using Android.Support.V7.Widget;
 using Android.Views;
 
 namespace MyScout.Android.UI
@@ -13,6 +14,13 @@ namespace MyScout.Android.UI
                 return MainActivity.Teams.Count; // TODO: Change this
             }
         }
+        protected Context teamActivityContext;
+
+        // Constructors
+        public TeamAdapter(Context context)
+        {
+            teamActivityContext = context;
+        }
 
         // Methods
         public void Add(Team item)
@@ -23,6 +31,7 @@ namespace MyScout.Android.UI
 
         public void Remove(TeamEntryViewHolder item)
         {
+            item.ClosePopupMenu(); // Close the popup menu if it happens to be open
             Remove(item.AdapterPosition);
         }
 
@@ -43,7 +52,7 @@ namespace MyScout.Android.UI
             var itemView = LayoutInflater.From(parent.Context).Inflate(
                 Resource.Layout.TeamListEntryLayout, parent, false);
 
-            return new TeamEntryViewHolder(itemView);
+            return new TeamEntryViewHolder(itemView, teamActivityContext);
         }
 
         public override void OnBindViewHolder(
@@ -56,7 +65,8 @@ namespace MyScout.Android.UI
                 return;
 
             var team = MainActivity.Teams[position]; // TODO: Change this
-            tvh.Label.Text = $"{team.Name} - {team.ID}";
+            tvh.Label.Text = (string.IsNullOrEmpty(team.ID)) ?
+                team.Name : $"{team.Name} - {team.ID}";
         }
     }
 }

@@ -148,6 +148,9 @@ namespace MyScout.Android
 			// aapt resource value: 0x7f020000
 			public const int Icon = 2130837504;
 			
+			// aapt resource value: 0x7f020001
+			public const int more_vert = 2130837505;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -173,11 +176,17 @@ namespace MyScout.Android
 			// aapt resource value: 0x7f050002
 			public const int TeamList = 2131034114;
 			
-			// aapt resource value: 0x7f050006
-			public const int TeamNameLbl = 2131034118;
+			// aapt resource value: 0x7f050007
+			public const int TeamMenuEditBtn = 2131034119;
+			
+			// aapt resource value: 0x7f050008
+			public const int TeamMenuRemoveBtn = 2131034120;
 			
 			// aapt resource value: 0x7f050005
-			public const int TeamSelectBtn = 2131034117;
+			public const int TeamNameLbl = 2131034117;
+			
+			// aapt resource value: 0x7f050006
+			public const int TeamPopupBtn = 2131034118;
 			
 			// aapt resource value: 0x7f050000
 			public const int item_touch_helper_previous_elevation = 2131034112;
@@ -210,6 +219,22 @@ namespace MyScout.Android
 			}
 			
 			private Layout()
+			{
+			}
+		}
+		
+		public partial class Menu
+		{
+			
+			// aapt resource value: 0x7f090000
+			public const int TeamPopupMenu = 2131296256;
+			
+			static Menu()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Menu()
 			{
 			}
 		}
