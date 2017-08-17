@@ -14,8 +14,8 @@ namespace MyScout.Android
             UUID.FromString("51dc3703-9458-4216-b2a3-a16455e6fdb5");
 
         protected BluetoothSocket socket;
-        protected BinaryReader reader;
-        protected BinaryWriter writer;
+        protected ExtendedBinaryReader reader;
+        protected ExtendedBinaryWriter writer;
         protected int connectAttempts = 0;
         protected bool active = false;
         private bool threadClosed = false;
@@ -81,8 +81,8 @@ namespace MyScout.Android
                 try
                 {
                     socket.Connect();
-                    reader = new BinaryReader(socket.InputStream, Encoding.ASCII, true);
-                    writer = new BinaryWriter(socket.OutputStream, Encoding.ASCII, true);
+                    reader = new ExtendedBinaryReader(socket.InputStream);
+                    writer = new ExtendedBinaryWriter(socket.OutputStream);
                     return true;
                 }
                 catch

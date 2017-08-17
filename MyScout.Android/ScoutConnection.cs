@@ -25,8 +25,8 @@ namespace MyScout.Android
                 try
                 {
                     socket = serverSocket.Accept();
-                    reader = new BinaryReader(socket.InputStream, Encoding.ASCII, true);
-                    writer = new BinaryWriter(socket.OutputStream, Encoding.ASCII, true);
+                    reader = new ExtendedBinaryReader(socket.InputStream);
+                    writer = new ExtendedBinaryWriter(socket.OutputStream);
                     return true;
                 }
                 catch

@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BluetoothConnection.cs" />
+    <Compile Include="ExtendedBinary.cs" />
     <Compile Include="ScoutConnection.cs" />
     <Compile Include="ScoutMasterConnection.cs" />
     <Compile Include="Team.cs" />
