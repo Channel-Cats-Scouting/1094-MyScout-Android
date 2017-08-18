@@ -1,7 +1,9 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
+using Android.Util;
 using Android.Widget;
 using System;
 
@@ -42,11 +44,18 @@ namespace MyScout.Android.UI
             teamAddBtn.Click += TeamAddBtn_Click;
         }
 
+        protected override void OnResume()
+        {
+            // Refresh data in team list
+            TeamListAdapter.NotifyDataSetChanged();
+            base.OnResume();
+        }
+
         private void TeamAddBtn_Click(object sender, EventArgs e)
         {
-            // TODO: Bring up the team add dialog instead of running this debug code
-            TeamListAdapter.Add(new Team($"Team {MainActivity.Teams.Count+1}",
-                (MainActivity.Teams.Count + 1000).ToString()));
+            // Open add team dialog
+            var intent = new Intent(this, typeof(EditTeamActivity));
+            StartActivity(intent);
         }
     }
 }

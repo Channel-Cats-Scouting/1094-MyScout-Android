@@ -87,6 +87,7 @@
     <Compile Include="ScoutConnection.cs" />
     <Compile Include="ScoutMasterConnection.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="UI\EditTeamActivity.cs" />
     <Compile Include="UI\MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +104,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\TeamListEntryLayout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\EditTeamLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

@@ -79,7 +79,9 @@ namespace MyScout.Android.UI
             {
                 // Edit Team
                 case Resource.Id.TeamMenuEditBtn:
-                    // TODO: Bring up edit team dialog
+                    var intent = new Intent(teamActivity, typeof(EditTeamActivity));
+                    intent.PutExtra("TeamIndex", AdapterPosition);
+                    teamActivity.StartActivity(intent);
                     break;
 
                 // Remove Team

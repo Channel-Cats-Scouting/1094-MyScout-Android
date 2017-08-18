@@ -161,6 +161,7 @@ namespace MyScout.Android.UI
                 adapter.Enable();
 
             // Update list of paired devices
+            adapter.StartDiscovery();
             devicesGroup.RemoveAllViews();
 
             foreach (var d in adapter.BondedDevices)
@@ -173,6 +174,9 @@ namespace MyScout.Android.UI
 
                 devicesGroup.AddView(rb);
             }
+
+            // Cancel device discovery as it slows down a Bluetooth connection
+            adapter.CancelDiscovery();
         }
 
         private void RegisterScoutBtn_Click(object sender, EventArgs e)
