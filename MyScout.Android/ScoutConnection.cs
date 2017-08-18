@@ -1,6 +1,8 @@
 ﻿using Android.Bluetooth;
-using System.IO;
-using System.Text;
+using Android.Util;
+using Android.Widget;
+using MyScout.Android.UI;
+using System;
 
 namespace MyScout.Android
 {
@@ -8,15 +10,22 @@ namespace MyScout.Android
     {
         // Variables/Constants
         protected BluetoothServerSocket serverSocket;
+        protected bool doListen = false;
 
         // Constructors
         public ScoutConnection(BluetoothAdapter adapter)
         {
+            // TODO: Only accept connections from the registered scout master
             serverSocket = adapter.ListenUsingRfcommWithServiceRecord(
                 "MyScout_Scout", MyScoutUUID);
         }
 
         // Methods
+        public void ListenForTeam()
+        {
+            doListen = true;
+        }
+
         protected override bool Connect()
         {
             // Accept any incoming connection requests
@@ -53,7 +62,34 @@ namespace MyScout.Android
 
         protected override void UpdateLoop()
         {
-            // TODO
+            if (!doListen) return;
+
+            try
+            {
+                // Block this thread until team data is read, or an exception is thrown
+                var team = reader.ReadTeam();
+
+                // TODO: Assign received team data to UI elements
+
+                // Show toast message on MainActivity
+                // TODO: Remove this
+                MainActivity.MainActivityInstance.RunOnUiThread(() =>
+                {
+                    var toast = Toast.MakeText(MainActivity.MainActivityInstance,
+                        $"Received team: {team.ID} - {team.Name}", ToastLength.Long);
+                    toast.Show();
+                });
+
+                doListen = false;
+
+                // TODO: Send round data to scout master if necessary
+            }
+            catch (Exception ex)
+            {
+                #if DEBUG
+                    Log.Error("MyScout", $"ERROR: {ex.Message}");
+                #endif
+            }
         }
     }
 }

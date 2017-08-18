@@ -1,4 +1,4 @@
-﻿using Android.Content;
+﻿using Android.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 
@@ -14,12 +14,12 @@ namespace MyScout.Android.UI
                 return MainActivity.Teams.Count; // TODO: Change this
             }
         }
-        protected Context teamActivityContext;
+        protected Activity teamActivity;
 
         // Constructors
-        public TeamAdapter(Context context)
+        public TeamAdapter(Activity activity)
         {
-            teamActivityContext = context;
+            teamActivity = activity;
         }
 
         // Methods
@@ -52,7 +52,7 @@ namespace MyScout.Android.UI
             var itemView = LayoutInflater.From(parent.Context).Inflate(
                 Resource.Layout.TeamListEntryLayout, parent, false);
 
-            return new TeamEntryViewHolder(itemView, teamActivityContext);
+            return new TeamEntryViewHolder(itemView, teamActivity);
         }
 
         public override void OnBindViewHolder(

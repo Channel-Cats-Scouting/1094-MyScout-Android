@@ -1,9 +1,9 @@
 ﻿using Android.Views;
 using Android.Support.V7.Widget;
 using Android.Widget;
-using Android.Util;
 using Android.Content;
 using System;
+using Android.App;
 
 namespace MyScout.Android.UI
 {
@@ -14,12 +14,12 @@ namespace MyScout.Android.UI
         public TextView Label { get; protected set; }
         public ImageButton PopupButton { get; protected set; }
         protected PopupMenu menu;
-        protected Context teamActivityContext;
+        protected Activity teamActivity;
 
         // Constructors
-        public TeamEntryViewHolder(View itemView, Context context) : base(itemView)
+        public TeamEntryViewHolder(View itemView, Activity activity) : base(itemView)
         {
-            teamActivityContext = context;
+            teamActivity = activity;
             itemView.SetOnClickListener(this);
             itemView.SetOnLongClickListener(this);
 
@@ -42,7 +42,7 @@ namespace MyScout.Android.UI
 
         public void OpenPopupMenu()
         {
-            menu = new PopupMenu(teamActivityContext, PopupButton);
+            menu = new PopupMenu(teamActivity, PopupButton);
             menu.Inflate(Resource.Menu.TeamPopupMenu);
             menu.MenuItemClick += TeamPopupMenu_ItemClick;
             menu.DismissEvent += TeamPopupMenu_Dismiss;
@@ -52,7 +52,12 @@ namespace MyScout.Android.UI
         // GUI Events
         public void OnClick(View view)
         {
-            // TODO: Select team
+            // Return the selected team's index
+            var returnedData = new Intent();
+            returnedData.PutExtra("SelectedTeamIndex", AdapterPosition);
+            teamActivity.SetResult(Result.Ok, returnedData);
+
+            teamActivity.Finish();
         }
 
         public bool OnLongClick(View view)

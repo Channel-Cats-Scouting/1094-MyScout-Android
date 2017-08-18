@@ -2,8 +2,6 @@
 using Java.Lang;
 using Java.Util;
 using System;
-using System.IO;
-using System.Text;
 
 namespace MyScout.Android
 {
