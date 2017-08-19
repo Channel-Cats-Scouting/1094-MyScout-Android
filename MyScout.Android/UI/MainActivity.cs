@@ -9,8 +9,8 @@ using System;
 
 namespace MyScout.Android.UI
 {
-    [Activity(Label = "MyScout", MainLauncher = true,
-        Icon = "@drawable/icon", Theme = "@android:style/Theme.Material.NoActionBar")]
+    [Activity(Label = "MyScout", Icon = "@drawable/icon",
+        Theme = "@android:style/Theme.Material.NoActionBar")]
     public class MainActivity : Activity
     {
         // Variables/Constants
