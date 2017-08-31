@@ -71,11 +71,10 @@ namespace MyScout.Android
 
                 // TODO: Assign received team data to UI elements
 
-                // Show toast message on MainActivity
-                // TODO: Remove this
-                MainActivity.MainActivityInstance.RunOnUiThread(() =>
+                // (TODO: Remove this) Show toast message on MainActivity
+                MainActivity.Instance.RunOnUiThread(() =>
                 {
-                    var toast = Toast.MakeText(MainActivity.MainActivityInstance,
+                    var toast = Toast.MakeText(MainActivity.Instance,
                         $"Received team: {team.ID} - {team.Name}", ToastLength.Long);
                     toast.Show();
                 });

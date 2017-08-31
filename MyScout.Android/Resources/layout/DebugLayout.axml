@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:fitsSystemWindows="true">
+    <Button
+        android:text="Open Team Entry GUI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/TeamChooseBtn" />
+    <Button
+        android:text="Open Settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/OpenSettingsBtn" />
+    <Button
+        android:text="Delete config file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/DeleteConfigBtn" />
+    <Button
+        android:text="Scout Master (Host)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ScoutMasterTestBtn"
+        android:layout_marginTop="20dp" />
+    <Button
+        android:text="Scout (Join)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ScoutTestBtn" />
+    <Button
+        android:text="Refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/RefreshDevicesBtn"
+        android:enabled="true" />
+    <TextView
+        android:text="Choose a Device:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50px" />
+    <include layout="@layout/ChooseDeviceLayout"/>
+</LinearLayout>

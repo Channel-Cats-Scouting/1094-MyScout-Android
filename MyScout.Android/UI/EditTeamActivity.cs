@@ -36,7 +36,7 @@ namespace MyScout.Android.UI
             // If a team index was assigned, we should allow the user to edit that team
             if (teamIndex >= 0)
             {
-                var team = MainActivity.Teams[teamIndex]; // TODO: Change this
+                var team = DebugActivity.Teams[teamIndex]; // TODO: Change this
                 teamNameTxtbx.Text = team.Name;
                 teamIDTxtbx.Text = team.ID;
             }
@@ -55,12 +55,12 @@ namespace MyScout.Android.UI
             if (teamIndex >= 0)
             {
                 // Edit existing team data
-                MainActivity.Teams[teamIndex] = team; // TODO: Change this
+                DebugActivity.Teams[teamIndex] = team; // TODO: Change this
             }
             else
             {
                 // Add team as new entry to list
-                MainActivity.Teams.Add(team); // TODO: Change this
+                DebugActivity.Teams.Add(team); // TODO: Change this
             }
 
             Finish();

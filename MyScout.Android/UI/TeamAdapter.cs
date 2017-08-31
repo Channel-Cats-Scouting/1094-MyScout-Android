@@ -11,7 +11,7 @@ namespace MyScout.Android.UI
         {
             get
             {
-                return MainActivity.Teams.Count; // TODO: Change this
+                return DebugActivity.Teams.Count; // TODO: Change this
             }
         }
         protected Activity teamActivity;
@@ -25,8 +25,8 @@ namespace MyScout.Android.UI
         // Methods
         public void Add(Team item)
         {
-            MainActivity.Teams.Add(item); // TODO: Change this
-            NotifyItemInserted(MainActivity.Teams.Count-1);
+            DebugActivity.Teams.Add(item); // TODO: Change this
+            NotifyItemInserted(DebugActivity.Teams.Count-1);
         }
 
         public void Remove(TeamEntryViewHolder item)
@@ -39,7 +39,7 @@ namespace MyScout.Android.UI
         {
             // Remove the item at the given postion from the Teams list and tell
             // Android we did so (so Android removes that item from the UI list, too).
-            MainActivity.Teams.RemoveAt(index); // TODO: Change this
+            DebugActivity.Teams.RemoveAt(index); // TODO: Change this
             NotifyItemRemoved(index);
         }
 
@@ -64,7 +64,7 @@ namespace MyScout.Android.UI
             if (tvh == null)
                 return;
 
-            var team = MainActivity.Teams[position]; // TODO: Change this
+            var team = DebugActivity.Teams[position]; // TODO: Change this
             tvh.Label.Text = (string.IsNullOrEmpty(team.ID)) ?
                 team.Name : $"{team.Name} - {team.ID}";
         }

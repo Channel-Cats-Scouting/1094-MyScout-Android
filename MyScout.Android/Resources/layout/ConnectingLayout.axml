@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
         <TextView
-            android:text="Connecting..."
+            android:text="Loading..."
             android:id="@+id/ConnectingLbl"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
