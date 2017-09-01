@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- DataSet Root Element -->
+  <xs:element name="DataSet">
+    <xs:complexType>
+      <xs:sequence>
+        
+        <!-- Pre-Scout Data -->
+        <xs:element name="PreScoutData">
+          <xs:complexType>
+            <xs:sequence minOccurs="0">
+              <xs:element ref="Data" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <!-- Round Data -->
+        <xs:element name="RoundData">
+          <xs:complexType>
+            <xs:sequence>
+              
+              <!-- Autonomous Data-->
+              <xs:element name="Autonomous" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element ref="Data" maxOccurs="unbounded"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              
+              <!-- Tele-Op Data -->
+              <xs:element name="TeleOp" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element ref="Data" maxOccurs="unbounded"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      
+      <!-- DataSet Attributes -->
+      <xs:attribute name="name" use="optional" type="xs:string" />
+      <xs:attribute name="version" use="required" type="xs:float" />
+      <xs:attribute name="author" use="optional" type="xs:string" />
+      
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Data Element -->
+  <xs:element name="Data">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataSet name="FIRST Steamworks (2017)" version="1.0" author="1094 Channel Cats"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Channel-Cats-Scouting/1094-MyScout-Android/master/DataSet_Schema.xsd">
+  <PreScoutData>
+    <Data name="Can shoot at Low Goal" type="bool" />
+    <Data name="Can shoot at High Goal" type="bool" />
+    <Data name="Max Carried" type="int" />
+  </PreScoutData>
+  <RoundData>
+    <Autonomous>
+      <Data name="Low Goals" type="int" />
+      <Data name="High Goals" type="int" />
+      <Data name="Got Gear" type="bool" />
+      <Data name="Crossed Line" type="bool" />
+    </Autonomous>
+    <TeleOp>
+      <Data name="Low Goals" type="int" />
+      <Data name="High Goal Accuracy" type="int" />
+      <Data name="Gears Delivered" type="int" />
+      <Data name="Rope Climbed" type="bool" />
+    </TeleOp>
+  </RoundData>
+</DataSet>
