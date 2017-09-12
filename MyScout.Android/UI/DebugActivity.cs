@@ -18,8 +18,8 @@ namespace MyScout.Android.UI
 
         protected BluetoothAdapter adapter; // TODO: Remove this from DebugActivity
         protected RadioGroup devicesGroup;
-        protected Button chooseTeamBtn, settingsBtn, deleteConfigBtn,
-            scoutMasterBtn, scoutBtn, refreshBtn;
+        protected Button chooseTeamBtn, settingsBtn, roundBtn,
+            deleteConfigBtn, scoutMasterBtn, scoutBtn, refreshBtn;
 
         protected const int GET_TEAM_REQUEST = 0, GET_TEAM_CONNECT_REQUEST = 1;
 
@@ -51,6 +51,7 @@ namespace MyScout.Android.UI
             // Assign local references to GUI elements
             chooseTeamBtn = FindViewById<Button>(Resource.Id.TeamChooseBtn);
             settingsBtn = FindViewById<Button>(Resource.Id.OpenSettingsBtn);
+            roundBtn = FindViewById<Button>(Resource.Id.OpenRoundBtn);
             deleteConfigBtn = FindViewById<Button>(Resource.Id.DeleteConfigBtn);
             scoutMasterBtn = FindViewById<Button>(Resource.Id.ScoutMasterTestBtn);
             scoutBtn = FindViewById<Button>(Resource.Id.ScoutTestBtn);
@@ -60,6 +61,7 @@ namespace MyScout.Android.UI
             // Assign events to GUI elements
             chooseTeamBtn.Click += ChooseTeamBtn_Click;
             settingsBtn.Click += SettingsBtn_Click;
+            roundBtn.Click += RoundBtn_Click;
             deleteConfigBtn.Click += DeleteConfigBtn_Click;
             scoutMasterBtn.Click += ScoutMasterBtn_Click;
             scoutBtn.Click += ScoutBtn_Click;
@@ -103,6 +105,11 @@ namespace MyScout.Android.UI
             StartActivity(typeof(SettingsActivity));
         }
 
+        private void RoundBtn_Click(object sender, EventArgs e)
+        {
+            StartActivity(typeof(RoundActivity));
+        }
+
         private void DeleteConfigBtn_Click(object sender, EventArgs e)
         {
             System.IO.File.Delete(Config.FilePath);
@@ -132,7 +139,7 @@ namespace MyScout.Android.UI
                 connection.Start();
 
                 // Send over the selected team's info on the next update loop
-                connection.SendTeam(SelectedTeam);
+                connection.SendRoundInfo(SelectedTeam);
             }
 
             scoutMasterBtn.Enabled = scoutBtn.Enabled = false;
@@ -143,7 +150,7 @@ namespace MyScout.Android.UI
             // Establish a connection with the scout master
             var connection = new ScoutConnection(adapter);
             connection.Start();
-            connection.ListenForTeam();
+            connection.StartListening();
 
             scoutMasterBtn.Enabled = scoutBtn.Enabled = false;
             ShowToast("Listening...", ToastLength.Short);

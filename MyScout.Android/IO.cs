@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Android.OS;
+using System.IO;
 
 namespace MyScout.Android
 {
@@ -7,11 +8,19 @@ namespace MyScout.Android
         // Variables/Constants
         public static string AppDirectory
         {
-            get
-            {
-                return Environment.GetFolderPath(
-                    Environment.SpecialFolder.Personal);
-            }
+            get => System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
+        }
+
+        public static string ExternalDataDirectory
+        {
+            get => Path.Combine(
+                    Environment.ExternalStorageDirectory.AbsolutePath, "MyScout");
+        }
+
+        public static string DataSetDirectory
+        {
+            get => Path.Combine(ExternalDataDirectory, "DataSets");
         }
 
         // Methods

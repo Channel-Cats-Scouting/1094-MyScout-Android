@@ -3,6 +3,7 @@
     public class Team
     {
         // Variables/Constants
+        public object[] PreScoutingData;
         public string Name, ID;
 
         // Constructors
@@ -15,6 +16,13 @@
         {
             Name = name;
             ID = id;
+        }
+
+        // Methods
+        public override string ToString()
+        {
+            return (string.IsNullOrEmpty(ID)) ?
+                Name : $"{Name} - {ID}";
         }
     }
 }

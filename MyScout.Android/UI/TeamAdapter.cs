@@ -65,8 +65,7 @@ namespace MyScout.Android.UI
                 return;
 
             var team = DebugActivity.Teams[position]; // TODO: Change this
-            tvh.Label.Text = (string.IsNullOrEmpty(team.ID)) ?
-                team.Name : $"{team.Name} - {team.ID}";
+            tvh.Label.Text = team.ToString();
         }
     }
 }

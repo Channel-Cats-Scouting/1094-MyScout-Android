@@ -17,6 +17,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/OpenSettingsBtn" />
     <Button
+        android:text="Open Round GUI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/OpenRoundBtn" />
+    <Button
         android:text="Delete config file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

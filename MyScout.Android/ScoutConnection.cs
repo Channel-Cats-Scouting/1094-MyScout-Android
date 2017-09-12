@@ -3,6 +3,7 @@ using Android.Util;
 using Android.Widget;
 using MyScout.Android.UI;
 using System;
+using System.IO;
 
 namespace MyScout.Android
 {
@@ -10,7 +11,13 @@ namespace MyScout.Android
     {
         // Variables/Constants
         protected BluetoothServerSocket serverSocket;
-        protected bool doListen = false;
+        protected Actions currentAction = Actions.None;
+        private string dataSetFilePath;
+
+        protected enum Actions
+        {
+            None, ListenForTeam, ListenForDataSetInfo, ReceiveDataSet
+        }
 
         // Constructors
         public ScoutConnection(BluetoothAdapter adapter)
@@ -21,9 +28,9 @@ namespace MyScout.Android
         }
 
         // Methods
-        public void ListenForTeam()
+        public void StartListening()
         {
-            doListen = true;
+            currentAction = Actions.ListenForTeam;
         }
 
         protected override bool Connect()
@@ -62,24 +69,24 @@ namespace MyScout.Android
 
         protected override void UpdateLoop()
         {
-            if (!doListen) return;
+            if (currentAction == Actions.None) return;
 
             try
             {
-                // Block this thread until team data is read, or an exception is thrown
-                var team = reader.ReadTeam();
-
-                // TODO: Assign received team data to UI elements
-
-                // (TODO: Remove this) Show toast message on MainActivity
-                MainActivity.Instance.RunOnUiThread(() =>
+                switch (currentAction)
                 {
-                    var toast = Toast.MakeText(MainActivity.Instance,
-                        $"Received team: {team.ID} - {team.Name}", ToastLength.Long);
-                    toast.Show();
-                });
+                    case Actions.ListenForTeam:
+                        ListenForTeam();
+                        break;
 
-                doListen = false;
+                    case Actions.ListenForDataSetInfo:
+                        ListenForDataSetInfo();
+                        break;
+
+                    case Actions.ReceiveDataSet:
+                        ReceiveDataSet();
+                        break;
+                }
 
                 // TODO: Send round data to scout master if necessary
             }
@@ -89,6 +96,66 @@ namespace MyScout.Android
                     Log.Error("MyScout", $"ERROR: {ex.Message}");
                 #endif
             }
+        }
+
+        protected void ListenForTeam()
+        {
+            // Block this thread until team data is read, or an exception is thrown
+            var team = reader.ReadTeam();
+            RoundActivity.CurrentTeam = team;
+            currentAction = Actions.ListenForDataSetInfo;
+        }
+
+        protected void ListenForDataSetInfo()
+        {
+            // Read the file name of the DataSet
+            var dataSetFileName = reader.ReadString();
+            DataSet.CurrentFileName = dataSetFileName;
+
+            dataSetFilePath = Path.Combine(
+                IO.DataSetDirectory, dataSetFileName);
+
+            if (File.Exists(dataSetFilePath))
+            {
+                // Let the scout master know we already have the DataSet
+                writer.Write(true);
+                currentAction = Actions.None;
+
+                // Load the DataSet
+                LoadDataSet();
+            }
+            else
+            {
+                // Let the scout master know we need the DataSet
+                writer.Write(false);
+                currentAction = Actions.ReceiveDataSet;
+            }
+        }
+
+        protected void ReceiveDataSet()
+        {
+            // Download the DataSet from the scout master
+            int fileSize = reader.ReadInt32();
+            var data = reader.ReadInChunks(fileSize, BluetoothIO.ChunkSize);
+            currentAction = Actions.None;
+
+            // Save the downloaded DataSet to the DataSets directory and load it
+            File.WriteAllBytes(dataSetFilePath, data);
+            LoadDataSet();
+        }
+
+        protected void LoadDataSet()
+        {
+            var dataSet = new DataSet();
+            dataSet.Load(dataSetFilePath);
+            DataSet.Current = dataSet;
+
+            // Go to Round UI
+            MainActivity.Instance.RunOnUiThread(() =>
+            {
+                MainActivity.Instance.StartActivity(typeof(RoundActivity));
+                MainActivity.Instance.Finish();
+            });
         }
     }
 }

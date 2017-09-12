@@ -1,5 +1,4 @@
-﻿using Android.Util;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace MyScout.Android
@@ -12,9 +11,6 @@ namespace MyScout.Android
         {
             get
             {
-                Log.Debug("MyScout",
-                    $"FilePath: {Path.Combine(IO.AppDirectory, FileName)}");
-
                 // Gets the full path to the config file
                 return Path.Combine(
                     IO.AppDirectory, FileName);

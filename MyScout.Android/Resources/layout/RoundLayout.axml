@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:theme="@android:style/Theme.Material">
+    <ScrollView
+        android:layout_weight="0"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/RoundDoneBtnLayout"
+        android:layout_alignParentTop="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:minHeight="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/RoundLinearLayout">
+            <LinearLayout
+                android:orientation="vertical"
+                android:minHeight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/AutoLinearLayout">
+                <TextView
+                    android:text="Autonomous"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:minHeight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TeleOPLinearLayout"
+                android:layout_marginTop="15dp">
+                <TextView
+                    android:text="Tele-OP"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center|bottom"
+        android:id="@+id/RoundDoneBtnLayout"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:text="Done with round"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/RoundDoneBtn" />
+    </LinearLayout>
+</RelativeLayout>

@@ -22,6 +22,7 @@ namespace MyScout.Android
         private static BluetoothAdapter adapter = null;
         public const string NoAdapterMessage =
             "ERROR: This device does not have a Bluetooth adapter!";
+        public const int ChunkSize = 2048;
 
         // Methods
         public static void ClearAllConnections()

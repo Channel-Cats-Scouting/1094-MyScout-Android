@@ -2,6 +2,7 @@
 using Android.Graphics;
 using Android.OS;
 using Android.Widget;
+using System.IO;
 
 namespace MyScout.Android.UI
 {
@@ -51,6 +52,11 @@ namespace MyScout.Android.UI
                 }
             }
 
+            // Create external directories if they don't already exist
+            // TODO: Make this cleaner
+            Directory.CreateDirectory(IO.ExternalDataDirectory);
+            Directory.CreateDirectory(IO.DataSetDirectory);
+
             // Call the appropriate method based on the assigned tablet type
             switch (Config.TabletType)
             {
@@ -77,13 +83,25 @@ namespace MyScout.Android.UI
             var connection = (BluetoothIO.Connections[0] as ScoutConnection);
             if (connection == null) return;
 
-            // Start listening for teams
+            // Start listening for Team/DataSet information
             connectingLbl.Text = "Waiting for Scout Master to assign team...";
-            connection.ListenForTeam();
+            connection.StartListening();
         }
 
         protected void ScoutMasterInit()
         {
+            // Load a DataSet (TODO: Remove this debug code)
+            var dataSet = new DataSet();
+            var dataSetPath = System.IO.Path.Combine(
+                IO.DataSetDirectory, "2017Game.xml");
+
+            if (File.Exists(dataSetPath))
+            {
+                dataSet.Load(dataSetPath);
+                DataSet.Current = dataSet;
+                DataSet.CurrentFileName = "2017Game.xml";
+            }
+
             // TODO: Go to entry-selection activity instead
             StartActivity(typeof(DebugActivity));
             Finish();

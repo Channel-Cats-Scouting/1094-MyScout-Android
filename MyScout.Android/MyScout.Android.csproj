@@ -85,10 +85,15 @@
     <Compile Include="BluetoothConnection.cs" />
     <Compile Include="BluetoothIO.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="DataPoint.cs" />
+    <Compile Include="DataSet.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="ExtendedBinary.cs" />
     <Compile Include="IO.cs" />
+    <Compile Include="Round.cs" />
     <Compile Include="ScoutConnection.cs" />
     <Compile Include="ScoutMasterConnection.cs" />
+    <Compile Include="UI\RoundActivity.cs" />
     <Compile Include="UI\SettingsActivity.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="UI\MainActivity.cs" />
@@ -121,6 +126,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SettingsLayout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\RoundLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
