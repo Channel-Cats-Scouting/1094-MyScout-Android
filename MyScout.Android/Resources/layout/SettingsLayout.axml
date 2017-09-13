@@ -17,67 +17,90 @@
       android:minHeight="5dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
-      <TextView
-        android:text="Tablet Type:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+      <LinearLayout
+        android:orientation="vertical"
+        android:minHeight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp" />
-      <RadioGroup
-          android:minWidth="25px"
-          android:minHeight="100px"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
-        <RadioButton android:id="@+id/SettingsScoutOption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scout" />
-        <RadioButton android:id="@+id/SettingsScoutMasterOption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scout Master" />
-      </RadioGroup>
-      <TextView
-        android:text="Tablet Color:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp" />
-      <RadioGroup
-          android:minWidth="25px"
-          android:minHeight="100px"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
-        <RadioButton android:id="@+id/SettingsRedOption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Red" />
-        <RadioButton android:id="@+id/SettingsBlueOption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Blue" />
-      </RadioGroup>
-      <TextView
-          android:text="Devices:"
+        android:id="@+id/SettingsTypeLayout">
+        <TextView
+          android:text="Tablet Type:"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="50px" />
-      <Button
-          android:text="Refresh"
+          android:layout_marginTop="2dp" />
+        <RadioGroup
+            android:minWidth="25px"
+            android:minHeight="100px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/SettingsTypeGroup">
+          <RadioButton android:id="@+id/SettingsScoutOption"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Scout" />
+          <RadioButton android:id="@+id/SettingsScoutMasterOption"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Scout Master" />
+        </RadioGroup>
+      </LinearLayout>
+      <LinearLayout
+        android:orientation="vertical"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SettingsColorLayout">
+        <TextView
+          android:text="Tablet Color:"
+          android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:id="@+id/RefreshDevicesBtn"
-          android:enabled="true" />
-      <Button
-          android:text="Register Scout"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:id="@+id/RegisterScoutBtn"
-          android:enabled="false" />
-      <include layout="@layout/ChooseDeviceLayout"/>
+          android:layout_marginTop="2dp" />
+        <RadioGroup
+            android:minWidth="25px"
+            android:minHeight="100px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+          <RadioButton android:id="@+id/SettingsRedOption"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Red" />
+          <RadioButton android:id="@+id/SettingsBlueOption"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Blue" />
+        </RadioGroup>
+      </LinearLayout>
+      <LinearLayout
+        android:orientation="vertical"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SettingsDevicesLayout">
+        <TextView
+            android:text="Devices:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:id="@+id/SettingsDevicesTxt"/>
+        <Button
+            android:text="Refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/RefreshDevicesBtn"
+            android:enabled="true" />
+        <Button
+            android:text="Register Scout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/RegisterScoutBtn"
+            android:enabled="false" />
+        <include layout="@layout/ChooseDeviceLayout"/>
+      </LinearLayout>
     </LinearLayout>
   </ScrollView>
   <LinearLayout
