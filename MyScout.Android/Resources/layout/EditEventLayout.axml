@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:theme="@android:style/Theme.Material">
+    <LinearLayout
+        android:orientation="vertical"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/EditEventBtnLayout"
+        android:layout_alignParentTop="true">
+        <TextView
+            android:text="Name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+        <EditText
+            android:id="@+id/EditEventNameTxtbx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="The event's name (e.g. Chaifetz Arena)"
+            android:singleLine="true" />
+        <TextView
+            android:text="DataSet"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+        <Button
+            android:id="@+id/EditEventDataSetBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="- No DataSet Assigned -" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center|bottom"
+        android:id="@+id/EditEventBtnLayout"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:text="OK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/EditEventBtn" />
+    </LinearLayout>
+</RelativeLayout>

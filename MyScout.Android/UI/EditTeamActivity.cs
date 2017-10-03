@@ -31,12 +31,12 @@ namespace MyScout.Android.UI
             okBtn.Click += OkBtn_Click;
 
             // Get team index
-            teamIndex = Intent.GetIntExtra("TeamIndex", -1);
+            teamIndex = Intent.GetIntExtra("ItemIndex", -1);
 
             // If a team index was assigned, we should allow the user to edit that team
             if (teamIndex >= 0)
             {
-                var team = DebugActivity.Teams[teamIndex]; // TODO: Change this
+                var team = Event.Current.Teams[teamIndex];
                 teamNameTxtbx.Text = team.Name;
                 teamIDTxtbx.Text = team.ID;
             }
@@ -48,19 +48,19 @@ namespace MyScout.Android.UI
             }
         }
 
-        private void OkBtn_Click(object sender, EventArgs e)
+        protected void OkBtn_Click(object sender, EventArgs e)
         {
             // Apply our changes and close the dialog
             var team = new Team(teamNameTxtbx.Text, teamIDTxtbx.Text);
             if (teamIndex >= 0)
             {
                 // Edit existing team data
-                DebugActivity.Teams[teamIndex] = team; // TODO: Change this
+                Event.Current.Teams[teamIndex] = team;
             }
             else
             {
                 // Add team as new entry to list
-                DebugActivity.Teams.Add(team); // TODO: Change this
+                Event.Current.Teams.Add(team);
             }
 
             Finish();

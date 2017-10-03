@@ -11,12 +11,15 @@ namespace MyScout.Android
     {
         // Variables/Constants
         protected BluetoothServerSocket serverSocket;
+        protected object[] roundAutoData, roundTeleOPData;
         protected Actions currentAction = Actions.None;
         private string dataSetFilePath;
+        private bool startListeningOnceDone = false;
 
         protected enum Actions
         {
-            None, ListenForTeam, ListenForDataSetInfo, ReceiveDataSet
+            None, ListenForTeam, ListenForDataSetInfo,
+            ReceiveDataSet, WriteRoundData
         }
 
         // Constructors
@@ -30,7 +33,22 @@ namespace MyScout.Android
         // Methods
         public void StartListening()
         {
-            currentAction = Actions.ListenForTeam;
+            if (currentAction != Actions.None)
+            {
+                startListeningOnceDone = true;
+            }
+            else
+            {
+                startListeningOnceDone = false;
+                currentAction = Actions.ListenForTeam;
+            }
+        }
+
+        public void WriteRoundData(object[] autoData, object[] teleOPData)
+        {
+            roundAutoData = autoData;
+            roundTeleOPData = teleOPData;
+            currentAction = Actions.WriteRoundData;
         }
 
         protected override bool Connect()
@@ -86,15 +104,27 @@ namespace MyScout.Android
                     case Actions.ReceiveDataSet:
                         ReceiveDataSet();
                         break;
-                }
 
-                // TODO: Send round data to scout master if necessary
+                    case Actions.WriteRoundData:
+                        WriteRoundData();
+                        break;
+                }
             }
             catch (Exception ex)
             {
                 #if DEBUG
                     Log.Error("MyScout", $"ERROR: {ex.Message}");
                 #endif
+
+                socket = null;
+                serverSocket = BluetoothIO.Adapter.ListenUsingRfcommWithServiceRecord(
+                    "MyScout_Scout", MyScoutUUID);
+            }
+
+            // Start listening for team data if ready
+            if (startListeningOnceDone)
+            {
+                StartListening();
             }
         }
 
@@ -110,8 +140,6 @@ namespace MyScout.Android
         {
             // Read the file name of the DataSet
             var dataSetFileName = reader.ReadString();
-            DataSet.CurrentFileName = dataSetFileName;
-
             dataSetFilePath = Path.Combine(
                 IO.DataSetDirectory, dataSetFileName);
 
@@ -156,6 +184,36 @@ namespace MyScout.Android
                 MainActivity.Instance.StartActivity(typeof(RoundActivity));
                 MainActivity.Instance.Finish();
             });
+        }
+
+        protected void WriteRoundData()
+        {
+            var dataSet = DataSet.Current;
+            writer.Write(true);
+
+            // Write Autonomous Data
+            for (int i = 0; i < roundAutoData.Length; ++i)
+            {
+                writer.WriteByType(roundAutoData[i],
+                    dataSet.RoundAutoData[i].DataType);
+            }
+
+            // Write Tele-OP Data
+            for (int i = 0; i < roundTeleOPData.Length; ++i)
+            {
+                writer.WriteByType(roundTeleOPData[i],
+                    dataSet.RoundTeleOPData[i].DataType);
+            }
+
+            // TODO: Remove this debug code
+            MainActivity.Instance.RunOnUiThread(new Action(() =>
+            {
+                Toast.MakeText(MainActivity.Instance,
+                    "Sent data", ToastLength.Long).Show();
+            }));
+
+            roundAutoData = roundTeleOPData = null;
+            currentAction = Actions.None;
         }
     }
 }

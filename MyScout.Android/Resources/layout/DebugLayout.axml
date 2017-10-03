@@ -22,32 +22,25 @@
         android:layout_height="wrap_content"
         android:id="@+id/OpenRoundBtn" />
     <Button
+        android:text="Open Scout Master GUI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/OpenScoutMasterBtn" />
+    <Button
         android:text="Delete config file"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/DeleteConfigBtn" />
     <Button
-        android:text="Scout Master (Host)"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ScoutMasterTestBtn"
-        android:layout_marginTop="20dp" />
+      android:text="Save Current Event"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/SaveCurrentEventBtn"/>
     <Button
-        android:text="Scout (Join)"
+        android:text="Next Round"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ScoutTestBtn" />
-    <Button
-        android:text="Refresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/RefreshDevicesBtn"
-        android:enabled="true" />
-    <TextView
-        android:text="Choose a Device:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50px" />
-    <include layout="@layout/ChooseDeviceLayout"/>
+        android:id="@+id/ScoutMasterTestBtn"/>
 </LinearLayout>

@@ -3,7 +3,12 @@
     public class Round
     {
         // Variables/Constants
-        public TeamData[] TeamData = new TeamData[6];
+        /// <summary>
+        /// First 3 Teams are on the red alliance.
+        /// The other 3 teams are on the blue alliance
+        /// </summary>
+        public TeamData[] TeamData = new TeamData[TeamCount];
+        public const int TeamCount = 6;
     }
 
     public class TeamData
@@ -11,14 +16,12 @@
         // Variables/Constants
         public object[] AutoData;
         public object[] TeleOPData;
-        public int TeamIndex;
+        public Team Team;
 
         // Constructors
-        public TeamData(int teamIndex, DataSet dataSet)
+        public TeamData(Team team)
         {
-            TeamIndex = teamIndex;
-            AutoData = new object[dataSet.RoundAutoData.Count];
-            TeleOPData = new object[dataSet.RoundTeleOPData.Count];
+            Team = team;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Android.OS;
 using Android.Widget;
 using System;
+using System.Collections.Generic;
 
 namespace MyScout.Android.UI
 {
@@ -57,7 +58,71 @@ namespace MyScout.Android.UI
 
         private void DoneBtn_Click(object sender, EventArgs e)
         {
-            // TODO: Go to connecting screen and send round data to scout master
+            var connection = (BluetoothIO.Connections[0] as ScoutConnection);
+            if (connection == null) return;
+
+            // Get round data from GUI
+            var autoData = GetGUIData(DataSet.Current.RoundAutoData, autoLayout);
+            var teleOPData = GetGUIData(DataSet.Current.RoundTeleOPData, teleOPLayout);
+
+            // Send data to scout master and go to connecting screen
+            connection.WriteRoundData(autoData, teleOPData);
+            StartActivity(typeof(MainActivity));
+            Finish();
+        }
+
+        private object[] GetGUIData(List<DataPoint> dataPoints, LinearLayout layout)
+        {
+            var data = new object[dataPoints.Count];
+            int i = -1;
+
+            for (int layoutIndex = 0; layoutIndex < layout.ChildCount; ++layoutIndex)
+            {
+                var view = layout.GetChildAt(layoutIndex);
+                if (view.GetType() == typeof(TextView))
+                    continue;
+
+                // Get the appropriate data based on type
+                var type = dataPoints[++i].DataType;
+
+                if (type == typeof(bool))
+                {
+                    // Booleans
+                    var chkBx = (view as CheckBox);
+                    data[i] = (chkBx == null) ? false : chkBx.Checked;
+                }
+                else if (type == typeof(string))
+                {
+                    // Strings
+                    var txtBx = (view as EditText);
+                    data[i] = txtBx?.Text;
+                }
+                else
+                {
+                    // Numbers
+                    var txtBx = (view as EditText);
+                    if (txtBx == null) continue;
+
+                    if (type == typeof(int))
+                    {
+                        data[i] = int.Parse(txtBx.Text);
+                    }
+                    else if (type == typeof(float))
+                    {
+                        data[i] = float.Parse(txtBx.Text);
+                    }
+                    else if (type == typeof(double))
+                    {
+                        data[i] = double.Parse(txtBx.Text);
+                    }
+                    else
+                    {
+                        data[i] = 0;
+                    }
+                }
+            }
+
+            return data;
         }
     }
 }

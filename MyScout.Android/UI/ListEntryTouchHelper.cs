@@ -3,17 +3,17 @@ using Android.Support.V7.Widget;
 
 namespace MyScout.Android.UI
 {
-    public class TeamEntryTouchHelper : ItemTouchHelper.Callback
+    public class ListEntryTouchHelper<T> : ItemTouchHelper.Callback
     {
         // Variables/Constants
         public override bool IsItemViewSwipeEnabled => true;  // We're allowed to swipe away items
         public override bool IsLongPressDragEnabled => false; // We're not allowed to reorder items
-        protected TeamAdapter adapter;
+        protected ListAdapter<T> adapter;
 
         // Constructors
-        public TeamEntryTouchHelper(TeamAdapter teamAdapter)
+        public ListEntryTouchHelper(ListAdapter<T> adapter)
         {
-            adapter = teamAdapter;
+            this.adapter = adapter;
         }
 
         // GUI Events
@@ -37,13 +37,13 @@ namespace MyScout.Android.UI
         public override void OnSwiped(
             RecyclerView.ViewHolder viewHolder, int direction)
         {
-            // Get the view holder item that was swiped away as a TeamViewHolder
-            var teamViewHolder = (viewHolder as TeamEntryViewHolder);
-            if (teamViewHolder == null)
+            // Get the view holder item that was swiped away as a ListEntryViewHolder
+            var listEntryViewHolder = (viewHolder as ListEntryViewHolder<T>);
+            if (listEntryViewHolder == null)
                 return;
 
             // Delete the item that was swiped away
-            adapter.Remove(teamViewHolder);
+            adapter.Remove(listEntryViewHolder);
         }
     }
 }

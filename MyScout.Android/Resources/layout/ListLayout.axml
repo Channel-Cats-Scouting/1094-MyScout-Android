@@ -12,21 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:id="@+id/TeamList"
-        android:layout_above="@+id/TeamButtonsLayout"
+        android:id="@+id/ListRecyclerView"
+        android:layout_above="@+id/ListButtonsLayout"
         android:layout_alignParentTop="true" />
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center|bottom"
-        android:id="@+id/TeamButtonsLayout"
+        android:id="@+id/ListButtonsLayout"
         android:minHeight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
         <Button
-            android:text="Add Team"
+            android:text="Add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/TeamAddBtn" />
+            android:id="@+id/ListAddBtn" />
     </LinearLayout>
 </RelativeLayout>

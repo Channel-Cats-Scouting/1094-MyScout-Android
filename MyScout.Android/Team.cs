@@ -3,7 +3,7 @@
     public class Team
     {
         // Variables/Constants
-        public object[] PreScoutingData;
+        public object[] PreScoutingData; // TODO: Use this array
         public string Name, ID;
 
         // Constructors

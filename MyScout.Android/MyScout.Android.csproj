@@ -93,7 +93,11 @@
     <Compile Include="Round.cs" />
     <Compile Include="ScoutConnection.cs" />
     <Compile Include="ScoutMasterConnection.cs" />
+    <Compile Include="UI\EditEventActivity.cs" />
+    <Compile Include="UI\EventActivity.cs" />
+    <Compile Include="UI\ListActivity.cs" />
     <Compile Include="UI\RoundActivity.cs" />
+    <Compile Include="UI\ScoutMasterActivity.cs" />
     <Compile Include="UI\SettingsActivity.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="UI\MainActivity.cs" />
@@ -102,18 +106,18 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\TeamActivity.cs" />
-    <Compile Include="UI\TeamAdapter.cs" />
-    <Compile Include="UI\TeamEntryTouchHelper.cs" />
-    <Compile Include="UI\TeamEntryViewHolder.cs" />
+    <Compile Include="UI\ListAdapter.cs" />
+    <Compile Include="UI\ListEntryTouchHelper.cs" />
+    <Compile Include="UI\ListEntryViewHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\TeamLayout.axml">
+    <AndroidResource Include="Resources\layout\ListLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\TeamListEntryLayout.axml">
+    <AndroidResource Include="Resources\layout\ListEntryLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\EditTeamLayout.axml">
@@ -131,6 +135,12 @@
     <AndroidResource Include="Resources\layout\RoundLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\ScoutMasterLayout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\EditEventLayout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\DebugLayout.axml">
@@ -146,7 +156,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\menu\TeamPopupMenu.xml">
+    <AndroidResource Include="Resources\menu\ListPopupMenu.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

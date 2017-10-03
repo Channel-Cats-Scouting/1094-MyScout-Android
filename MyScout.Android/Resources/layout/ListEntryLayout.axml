@@ -14,14 +14,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF"
         android:text="Caption"
-        android:id="@+id/TeamNameLbl"
+        android:id="@+id/ListEntryNameLbl"
         android:layout_marginLeft="4dp"
         android:layout_centerVertical="true" />
     <ImageButton
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/TeamPopupBtn"
+        android:id="@+id/ListEntryPopupBtn"
         android:background="#00000000"
         android:src="@drawable/ic_more_vert_white_24dp" />
 </RelativeLayout>

@@ -7,25 +7,30 @@ using Android.App;
 
 namespace MyScout.Android.UI
 {
-    public class TeamEntryViewHolder : RecyclerView.ViewHolder,
+    public class ListEntryViewHolder<T> : RecyclerView.ViewHolder,
         View.IOnClickListener, View.IOnLongClickListener
     {
         // Variables/Constants
         public TextView Label { get; protected set; }
         public ImageButton PopupButton { get; protected set; }
+
+        protected ListActivity<T> activity;
+        protected ListAdapter<T> adapter;
         protected PopupMenu menu;
-        protected Activity teamActivity;
 
         // Constructors
-        public TeamEntryViewHolder(View itemView, Activity activity) : base(itemView)
+        public ListEntryViewHolder(View itemView,
+            ListActivity<T> activity, ListAdapter<T> adapter) : base(itemView)
         {
-            teamActivity = activity;
+            this.activity = activity;
+            this.adapter = adapter;
+
             itemView.SetOnClickListener(this);
             itemView.SetOnLongClickListener(this);
 
             // Assign local references to GUI elements
-            Label = itemView.FindViewById<TextView>(Resource.Id.TeamNameLbl);
-            PopupButton = itemView.FindViewById<ImageButton>(Resource.Id.TeamPopupBtn);
+            Label = itemView.FindViewById<TextView>(Resource.Id.ListEntryNameLbl);
+            PopupButton = itemView.FindViewById<ImageButton>(Resource.Id.ListEntryPopupBtn);
 
             // Assign events to GUI elements
             PopupButton.Click += PopupButton_Click;
@@ -42,27 +47,22 @@ namespace MyScout.Android.UI
 
         public void OpenPopupMenu()
         {
-            menu = new PopupMenu(teamActivity, PopupButton);
-            menu.Inflate(Resource.Menu.TeamPopupMenu);
-            menu.MenuItemClick += TeamPopupMenu_ItemClick;
-            menu.DismissEvent += TeamPopupMenu_Dismiss;
+            menu = new PopupMenu(activity, PopupButton);
+            menu.Inflate(Resource.Menu.ListPopupMenu);
+            menu.MenuItemClick += PopupMenu_ItemClick;
+            menu.DismissEvent += PopupMenu_Dismiss;
             menu.Show();
         }
 
         // GUI Events
         public void OnClick(View view)
         {
-            // Return the selected team's index
-            var returnedData = new Intent();
-            returnedData.PutExtra("SelectedTeamIndex", AdapterPosition);
-            teamActivity.SetResult(Result.Ok, returnedData);
-
-            teamActivity.Finish();
+            activity.OnItemClick(AdapterPosition);
         }
 
         public bool OnLongClick(View view)
         {
-            // TODO: Possibly make this open the edit team dialog instead?
+            // TODO: Possibly make this open the edit dialog instead?
             OpenPopupMenu();
             return true;
         }
@@ -72,26 +72,26 @@ namespace MyScout.Android.UI
             OpenPopupMenu();
         }
 
-        protected void TeamPopupMenu_ItemClick(
+        protected void PopupMenu_ItemClick(
             object sender, PopupMenu.MenuItemClickEventArgs e)
         {
             switch (e.Item.ItemId)
             {
-                // Edit Team
-                case Resource.Id.TeamMenuEditBtn:
-                    var intent = new Intent(teamActivity, typeof(EditTeamActivity));
-                    intent.PutExtra("TeamIndex", AdapterPosition);
-                    teamActivity.StartActivity(intent);
+                // Edit Item
+                case Resource.Id.ListPopupMenuEditBtn:
+                    var intent = new Intent(activity, adapter.EditItemActivity);
+                    intent.PutExtra("ItemIndex", AdapterPosition);
+                    activity.StartActivity(intent);
                     break;
 
-                // Remove Team
-                case Resource.Id.TeamMenuRemoveBtn:
-                    TeamActivity.TeamListAdapter.Remove(this);
+                // Remove Item
+                case Resource.Id.ListPopupMenuRemoveBtn:
+                    adapter.Remove(this);
                     break;
             }
         }
 
-        protected void TeamPopupMenu_Dismiss(
+        protected void PopupMenu_Dismiss(
             object sender, PopupMenu.DismissEventArgs e)
         {
             ClosePopupMenu();

@@ -11,6 +11,7 @@ namespace MyScout.Android
         public static readonly UUID MyScoutUUID = // Literally just a randomly-generated string
             UUID.FromString("51dc3703-9458-4216-b2a3-a16455e6fdb5");
 
+        public bool Active { get => active; }
         protected BluetoothSocket socket;
         protected ExtendedBinaryReader reader;
         protected ExtendedBinaryWriter writer;
@@ -27,7 +28,7 @@ namespace MyScout.Android
             base.Start();
         }
 
-        public void Close()
+        public virtual void Close()
         {
             // Set active to false so the thread terminates on the next loop
             active = false;
@@ -51,7 +52,7 @@ namespace MyScout.Android
                 socket.Close();
         }
 
-        public override void Run()
+        public override sealed void Run()
         {
             // Update loop
             while (active)
@@ -60,12 +61,19 @@ namespace MyScout.Android
                 // and return if attempt is unsuccessful.
                 if (socket == null || !socket.IsConnected)
                 {
-                    if (!Connect()) return;
+                    if (!Connect())
+                    {
+                        threadClosed = true;
+                        Close();
+                        return;
+                    }
                 }
 
                 // Call the update loop method
                 UpdateLoop();
             }
+
+            threadClosed = true;
         }
 
         protected virtual bool Connect()

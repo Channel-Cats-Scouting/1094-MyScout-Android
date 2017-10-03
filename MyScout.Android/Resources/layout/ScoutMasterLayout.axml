@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.Material.NoActionBar">
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:id="@+id/ScoutMasterRoundsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <TextView
+            android:text="Round 1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/ScoutMasterRoundLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+        <Button
+            android:text="&lt;"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ScoutMasterPrevBtn"
+            android:layout_alignParentLeft="true"
+            android:textSize="30dp" />
+        <Button
+            android:text="&gt;"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ScoutMasterNextBtn"
+            android:textSize="30dp"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <ScrollView
+        android:layout_weight="0"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ScoutMasterStartBtnLayout"
+        android:layout_below="@+id/ScoutMasterRoundsLayout">
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ScoutMasterTeamsLayout">
+            <Button
+                android:text="- No Team Assigned -"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/RedTeamSlot1"
+                android:background="#FFFF0000"
+                android:layout_marginTop="4dp"
+                android:tag="0" />
+            <Button
+                android:text="- No Team Assigned -"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/RedTeamSlot2"
+                android:background="#FFFF0000"
+                android:layout_marginTop="2dp"
+                android:tag="1" />
+            <Button
+                android:text="- No Team Assigned -"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/RedTeamSlot3"
+                android:background="#FFFF0000"
+                android:layout_marginTop="2dp"
+                android:tag="2" />
+            <Button
+                android:text="- No Team Assigned -"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/BlueTeamSlot1"
+                android:background="#FF0000FF"
+                android:layout_marginTop="4dp"
+                android:tag="3" />
+            <Button
+                android:text="- No Team Assigned -"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/BlueTeamSlot2"
+                android:background="#FF0000FF"
+                android:layout_marginTop="2dp"
+                android:tag="4" />
+            <Button
+                android:text="- No Team Assigned -"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/BlueTeamSlot3"
+                android:background="#FF0000FF"
+                android:layout_marginTop="2dp"
+                android:tag="5" />
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center|bottom"
+        android:id="@+id/ScoutMasterStartBtnLayout"
+        android:minHeight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:text="Start Round"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ScoutMasterStartRoundBtn" />
+    </LinearLayout>
+</RelativeLayout>

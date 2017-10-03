@@ -11,6 +11,7 @@ namespace MyScout.Android.UI
     public class SettingsActivity : Activity
     {
         // Variables/Constants
+        public static bool IsFirstTimeSetup = false;
         protected LinearLayout typeLayout, colorLayout, devicesLayout;
         protected RadioGroup typeGroup, devicesGroup;
         protected RadioButton scoutOption, scoutMasterOption, redOption, blueOption;
@@ -82,6 +83,11 @@ namespace MyScout.Android.UI
                 Config.Load();
 
             // Change GUI elements to match settings
+            if (IsFirstTimeSetup)
+            {
+                Title = "First-Time Setup";
+            }
+
             scoutOption.Checked = (Config.TabletType == Config.TabletTypes.Scout);
             scoutMasterOption.Checked = (Config.TabletType == Config.TabletTypes.ScoutMaster);
             redOption.Checked = (Config.TabletColor == Config.AllianceColors.Red);
@@ -173,6 +179,12 @@ namespace MyScout.Android.UI
             Config.Save();
 
             // Close settings activity
+            if (IsFirstTimeSetup)
+            {
+                IsFirstTimeSetup = false;
+                StartActivity(typeof(MainActivity));
+            }
+
             Finish();
         }
     }

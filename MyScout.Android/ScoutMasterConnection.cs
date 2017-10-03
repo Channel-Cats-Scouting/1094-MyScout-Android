@@ -1,5 +1,6 @@
 ﻿using Android.Bluetooth;
 using Android.Util;
+using MyScout.Android.UI;
 using System;
 using System.IO;
 
@@ -8,12 +9,15 @@ namespace MyScout.Android
     public class ScoutMasterConnection : BluetoothConnection
     {
         // Variables/Constants
+        protected Round round = null;
         protected Team teamToSend = null;
+        protected int teamDataIndex;
         protected Actions currentAction = Actions.None;
 
         protected enum Actions
         {
-            None, SendTeam, SendDataSetInfo, SendDataSet
+            None, SendTeam, SendDataSetInfo,
+            SendDataSet, ReadRoundData
         }
 
         // Constructors
@@ -23,10 +27,20 @@ namespace MyScout.Android
         }
 
         // Methods
-        public void SendRoundInfo(Team team)
+        public void SendRoundInfo(int roundTeamIndex, int roundIndex)
         {
-            teamToSend = team;
+            round = Event.Current.Rounds[roundIndex];
+            var teamData = round.TeamData[roundTeamIndex];
+
+            teamDataIndex = roundTeamIndex;
+            teamToSend = teamData.Team;
             currentAction = Actions.SendTeam;
+        }
+
+        public override void Close()
+        {
+            UpdateScoutMasterUI();
+            base.Close();
         }
 
         protected override void UpdateLoop()
@@ -48,15 +62,19 @@ namespace MyScout.Android
                     case Actions.SendDataSet:
                         WriteDataSet();
                         break;
-                }
 
-                // TODO: Receive round data from connected scout if necessary
+                    case Actions.ReadRoundData:
+                        ReadRoundData();
+                        break;
+                }
             }
             catch (Exception ex)
             {
                 #if DEBUG
                     Log.Error("MyScout", $"ERROR: {ex.Message}");
                 #endif
+
+                Close();
             }
         }
 
@@ -71,12 +89,12 @@ namespace MyScout.Android
         protected void WriteDataSetInfo()
         {
             // Send DataSet FileName
-            writer.Write(DataSet.CurrentFileName);
+            writer.Write(Event.Current.DataSetFileName);
 
             // Wait to see if we need to send the DataSet over, or if the scout already has it
             bool hasDataSet = reader.ReadBoolean();
             currentAction = (hasDataSet) ?
-                Actions.None : Actions.SendDataSet;
+                Actions.ReadRoundData : Actions.SendDataSet;
         }
 
         protected void WriteDataSet()
@@ -84,13 +102,72 @@ namespace MyScout.Android
             // Send the DataSet in it's entirity
             // TODO: Maybe compress this?
             string dataSetPath = Path.Combine(
-                IO.DataSetDirectory, DataSet.CurrentFileName);
+                IO.DataSetDirectory, Event.Current.DataSetFileName);
 
             var data = File.ReadAllBytes(dataSetPath);
             writer.Write(data.Length);
             writer.WriteInChunks(data, BluetoothIO.ChunkSize);
 
+            currentAction = Actions.ReadRoundData;
+        }
+
+        protected void ReadRoundData()
+        {
+            var dataSet = DataSet.Current;
+            var teamData = round.TeamData[teamDataIndex];
+
+            // Wait until ready
+            if (!reader.ReadBoolean()) return;
+
+            // Get Autonomous Round Data
+            teamData.AutoData = new object[dataSet.RoundAutoData.Count];
+            for (int i = 0; i < dataSet.RoundAutoData.Count; ++i)
+            {
+                var point = dataSet.RoundAutoData[i];
+                teamData.AutoData[i] = reader.ReadByType(point.DataType);
+
+                // TODO: Remove this line
+                Log.Debug("MyScout", $"Auto Data #{i}: {teamData.AutoData[i].ToString()}");
+            }
+
+            // Get Tele-OP Round Data
+            teamData.TeleOPData = new object[dataSet.RoundTeleOPData.Count];
+            for (int i = 0; i < dataSet.RoundTeleOPData.Count; ++i)
+            {
+                var point = dataSet.RoundTeleOPData[i];
+                teamData.TeleOPData[i] = reader.ReadByType(point.DataType);
+
+                // TODO: Remove this line
+                Log.Debug("MyScout", $"Tele-OP Data #{i}: {teamData.TeleOPData[i].ToString()}");
+            }
+
+            // TODO: Remove this debug code
+            Log.Debug("MyScout", "Received Round Data!");
+
+            // Go to the next round automatically if there is one
+            if (Event.Current.CurrentRoundIndex < Event.Current.Rounds.Count - 1)
+            {
+                ++Event.Current.CurrentRoundIndex;
+            }
+
+            // Save the current event
+            Event.Current.Save();
+
+            // Update the Scout Master UI
+            UpdateScoutMasterUI();
             currentAction = Actions.None;
+        }
+
+        protected void UpdateScoutMasterUI()
+        {
+            if (ScoutMasterActivity.Instance != null)
+            {
+                ScoutMasterActivity.Instance.RunOnUiThread(new Action(() =>
+                {
+                    --ScoutMasterActivity.WaitingOnScouts;
+                    ScoutMasterActivity.Instance.UpdateUI();
+                }));
+            }
         }
     }
 }

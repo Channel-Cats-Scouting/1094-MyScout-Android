@@ -45,9 +45,9 @@ namespace MyScout.Android.UI
                 if (!Config.Load())
                 {
                     // Loading failed! Go to the first-time setup screen
-                    // TODO: Go to first-time setup screen instead
+                    SettingsActivity.IsFirstTimeSetup = true;
                     StartActivity(typeof(SettingsActivity));
-                    // TODO: Call Finish here to prevent user from going back to this screen
+                    Finish();
                     return;
                 }
             }
@@ -90,20 +90,7 @@ namespace MyScout.Android.UI
 
         protected void ScoutMasterInit()
         {
-            // Load a DataSet (TODO: Remove this debug code)
-            var dataSet = new DataSet();
-            var dataSetPath = System.IO.Path.Combine(
-                IO.DataSetDirectory, "2017Game.xml");
-
-            if (File.Exists(dataSetPath))
-            {
-                dataSet.Load(dataSetPath);
-                DataSet.Current = dataSet;
-                DataSet.CurrentFileName = "2017Game.xml";
-            }
-
-            // TODO: Go to entry-selection activity instead
-            StartActivity(typeof(DebugActivity));
+            StartActivity(typeof(EventActivity));
             Finish();
         }
 

@@ -10,7 +10,6 @@ namespace MyScout.Android
     {
         // Variables/Constants
         public static DataSet Current;
-        public static string CurrentFileName;
 
         public List<DataPoint> PreScoutingData = new List<DataPoint>();
         public List<DataPoint> RoundAutoData = new List<DataPoint>();

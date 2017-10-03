@@ -2,10 +2,10 @@
 using Android.Bluetooth;
 using Android.OS;
 using Android.Widget;
-using System.Collections.Generic;
 using Android.Content;
 using Android.Runtime;
 using System;
+using Android.Util;
 
 namespace MyScout.Android.UI
 {
@@ -13,29 +13,15 @@ namespace MyScout.Android.UI
     public class DebugActivity : Activity
     {
         // Variables/Constants
-        public static List<Team> Teams = new List<Team>();  // TODO: Remove this from DebugActivity
         public static Team SelectedTeam; // TODO: Remove this from DebugActivity
 
         protected BluetoothAdapter adapter; // TODO: Remove this from DebugActivity
-        protected RadioGroup devicesGroup;
-        protected Button chooseTeamBtn, settingsBtn, roundBtn,
-            deleteConfigBtn, scoutMasterBtn, scoutBtn, refreshBtn;
+        protected Button chooseTeamBtn, settingsBtn, roundBtn, scoutMasterBtn,
+            deleteConfigBtn, saveEventBtn, nextRoundBtn;
 
         protected const int GET_TEAM_REQUEST = 0, GET_TEAM_CONNECT_REQUEST = 1;
 
         // Methods
-        private BluetoothDevice GetSelectedDevice()
-        {
-            var rb = devicesGroup.FindViewById<RadioButton>
-                (devicesGroup.CheckedRadioButtonId);
-
-            // Get device
-            var device = adapter.GetRemoteDevice((string)rb.Tag);
-            ShowToast($"Got remote device {adapter.Address}", ToastLength.Long);
-
-            return device;
-        }
-
         private void ShowToast(string text, ToastLength duration)
         {
             Toast.MakeText(this, text, duration).Show();
@@ -52,20 +38,33 @@ namespace MyScout.Android.UI
             chooseTeamBtn = FindViewById<Button>(Resource.Id.TeamChooseBtn);
             settingsBtn = FindViewById<Button>(Resource.Id.OpenSettingsBtn);
             roundBtn = FindViewById<Button>(Resource.Id.OpenRoundBtn);
+            scoutMasterBtn = FindViewById<Button>(Resource.Id.OpenScoutMasterBtn);
+
             deleteConfigBtn = FindViewById<Button>(Resource.Id.DeleteConfigBtn);
-            scoutMasterBtn = FindViewById<Button>(Resource.Id.ScoutMasterTestBtn);
-            scoutBtn = FindViewById<Button>(Resource.Id.ScoutTestBtn);
-            refreshBtn = FindViewById<Button>(Resource.Id.RefreshDevicesBtn);
-            devicesGroup = FindViewById<RadioGroup>(Resource.Id.BluetoothDevicesGroup);
+            saveEventBtn = FindViewById<Button>(Resource.Id.SaveCurrentEventBtn);
+            nextRoundBtn = FindViewById<Button>(Resource.Id.ScoutMasterTestBtn);
 
             // Assign events to GUI elements
             chooseTeamBtn.Click += ChooseTeamBtn_Click;
             settingsBtn.Click += SettingsBtn_Click;
             roundBtn.Click += RoundBtn_Click;
-            deleteConfigBtn.Click += DeleteConfigBtn_Click;
             scoutMasterBtn.Click += ScoutMasterBtn_Click;
-            scoutBtn.Click += ScoutBtn_Click;
-            refreshBtn.Click += RefreshBtn_Click;
+
+            deleteConfigBtn.Click += DeleteConfigBtn_Click;
+            saveEventBtn.Click += SaveEventBtn_Click;
+            nextRoundBtn.Click += NextRoundBtn_Click;
+
+            // Debug stuff™
+            if (Event.Current == null)
+            {
+                Event.Current = new Event()
+                {
+                    Name = "Test Event",
+                };
+
+                Event.Current.Rounds.Add(new Round());
+                ++Event.Current.CurrentRoundIndex;
+            }
         }
 
         protected override void OnActivityResult(
@@ -76,9 +75,9 @@ namespace MyScout.Android.UI
                 if (resultCode == Result.Ok)
                 {
                     // Set the selected team using the index returned from the team activity
-                    int selectedTeamIndex = data.GetIntExtra("SelectedTeamIndex", -1);
+                    int selectedTeamIndex = data.GetIntExtra("SelectedItemIndex", -1);
                     if (selectedTeamIndex < 0) return;
-                    SelectedTeam = Teams[selectedTeamIndex];
+                    SelectedTeam = Event.Current.Teams[selectedTeamIndex];
 
                     // TODO: Remove this
                     if (requestCode == GET_TEAM_REQUEST)
@@ -87,7 +86,7 @@ namespace MyScout.Android.UI
                     }
                     else
                     {
-                        ScoutMasterBtn_Click(null, null);
+                        NextRoundBtn_Click(null, null);
                     }
                 }
             }
@@ -110,14 +109,43 @@ namespace MyScout.Android.UI
             StartActivity(typeof(RoundActivity));
         }
 
+        private void ScoutMasterBtn_Click(object sender, EventArgs e)
+        {
+            StartActivity(typeof(ScoutMasterActivity));
+        }
+
         private void DeleteConfigBtn_Click(object sender, EventArgs e)
         {
             System.IO.File.Delete(Config.FilePath);
             ShowToast("Removed config file", ToastLength.Short);
         }
 
-        private void ScoutMasterBtn_Click(object sender, EventArgs e)
+        private void SaveEventBtn_Click(object sender, EventArgs e)
         {
+            if (Event.Current == null) return;
+            if (string.IsNullOrEmpty(Event.Current.Name))
+            {
+                Event.Current.Name = "Test Event";
+            }
+
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            Event.Current.Save();
+            sw.Stop();
+
+            ShowToast(string.Format("Saved \"{0}\" in {1}(ms).",
+                Event.Current.Name, sw.ElapsedMilliseconds), ToastLength.Long);
+        }
+
+        private void NextRoundBtn_Click(object sender, EventArgs e)
+        {
+            if (Event.Current == null)
+            {
+                Event.Current = new Event()
+                {
+                    Name = "Test Event",
+                };
+            }
+
             // If no team is selected, get one first
             if (SelectedTeam == null)
             {
@@ -126,70 +154,48 @@ namespace MyScout.Android.UI
                 return;
             }
 
-            ShowToast("Assigning selected teams...", ToastLength.Short);
+            ShowToast("Assigning selected team(s)...", ToastLength.Short);
 
+            // Setup the next round
+            var round = new Round();
+            /*round.TeamData.Length*/
+            for (int i = 0; i < Config.RegisteredDevices.Count; ++i)
+            {
+                round.TeamData[i] = new TeamData(SelectedTeam);
+            }
+
+            Event.Current.Rounds.Add(round);
+            ++Event.Current.CurrentRoundIndex;
+
+            // TODO: Assign Teams to scouts automatically based on tablet color
+
+            // Send data to the scouts
             var adapter = BluetoothIO.Adapter;
-            foreach (var scout in Config.RegisteredDevices)
+            for (int i = 0; i < Config.RegisteredDevices.Count; ++i)
             {
                 // Get the device
+                var scout = Config.RegisteredDevices[i];
                 var device = adapter.GetRemoteDevice(scout);
 
                 // Establish a connection with the scout
-                var connection = new ScoutMasterConnection(device);
-                connection.Start();
+                ScoutMasterConnection connection;
+                if (BluetoothIO.Connections.Count <= i)
+                {
+                    connection = new ScoutMasterConnection(device);
+                    connection.Start();
+                    BluetoothIO.Connections.Add(connection);
+                }
+                else
+                {
+                    connection = (BluetoothIO.Connections[i] as ScoutMasterConnection);
+                }
+
+                if (connection == null)
+                    continue;
 
                 // Send over the selected team's info on the next update loop
-                connection.SendRoundInfo(SelectedTeam);
+                connection.SendRoundInfo(i, Event.Current.CurrentRoundIndex);
             }
-
-            scoutMasterBtn.Enabled = scoutBtn.Enabled = false;
-        }
-
-        private void ScoutBtn_Click(object sender, EventArgs e)
-        {
-            // Establish a connection with the scout master
-            var connection = new ScoutConnection(adapter);
-            connection.Start();
-            connection.StartListening();
-
-            scoutMasterBtn.Enabled = scoutBtn.Enabled = false;
-            ShowToast("Listening...", ToastLength.Short);
-        }
-
-        private void RefreshBtn_Click(object sender, EventArgs e)
-        {
-            // Get the default Bluetooth adapter
-            adapter = BluetoothAdapter.DefaultAdapter;
-            if (adapter == null)
-            {
-                ShowToast(
-                    "This device does not have a Bluetooth adapter!", ToastLength.Long);
-
-                refreshBtn.Enabled = false;
-                return;
-            }
-
-            // Enable the Bluetooth adapter
-            if (!adapter.IsEnabled)
-                adapter.Enable();
-
-            // Update list of paired devices
-            adapter.StartDiscovery();
-            devicesGroup.RemoveAllViews();
-
-            foreach (var d in adapter.BondedDevices)
-            {
-                var rb = new RadioButton(this)
-                {
-                    Text = $"{d.Name} ({d.Address})",
-                    Tag = d.Address
-                };
-
-                devicesGroup.AddView(rb);
-            }
-
-            // Cancel device discovery as it slows down a Bluetooth connection
-            adapter.CancelDiscovery();
         }
     }
 }

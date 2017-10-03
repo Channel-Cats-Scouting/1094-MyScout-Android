@@ -167,8 +167,17 @@ namespace MyScout.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050011
-			public const int AutoLinearLayout = 2131034129;
+			// aapt resource value: 0x7f05001a
+			public const int AutoLinearLayout = 2131034138;
+			
+			// aapt resource value: 0x7f050026
+			public const int BlueTeamSlot1 = 2131034150;
+			
+			// aapt resource value: 0x7f050027
+			public const int BlueTeamSlot2 = 2131034151;
+			
+			// aapt resource value: 0x7f050028
+			public const int BlueTeamSlot3 = 2131034152;
 			
 			// aapt resource value: 0x7f050001
 			public const int BluetoothDevicesGroup = 2131034113;
@@ -179,107 +188,152 @@ namespace MyScout.Android
 			// aapt resource value: 0x7f050003
 			public const int ConnectingProgressCircle = 2131034115;
 			
-			// aapt resource value: 0x7f050007
-			public const int DeleteConfigBtn = 2131034119;
+			// aapt resource value: 0x7f050008
+			public const int DeleteConfigBtn = 2131034120;
 			
 			// aapt resource value: 0x7f05000e
-			public const int EditTeamBtn = 2131034126;
+			public const int EditEventBtn = 2131034126;
 			
 			// aapt resource value: 0x7f05000b
-			public const int EditTeamBtnLayout = 2131034123;
-			
-			// aapt resource value: 0x7f05000c
-			public const int EditTeamIDTxtbx = 2131034124;
+			public const int EditEventBtnLayout = 2131034123;
 			
 			// aapt resource value: 0x7f05000d
-			public const int EditTeamNameTxtbx = 2131034125;
+			public const int EditEventDataSetBtn = 2131034125;
+			
+			// aapt resource value: 0x7f05000c
+			public const int EditEventNameTxtbx = 2131034124;
+			
+			// aapt resource value: 0x7f050012
+			public const int EditTeamBtn = 2131034130;
+			
+			// aapt resource value: 0x7f05000f
+			public const int EditTeamBtnLayout = 2131034127;
+			
+			// aapt resource value: 0x7f050010
+			public const int EditTeamIDTxtbx = 2131034128;
+			
+			// aapt resource value: 0x7f050011
+			public const int EditTeamNameTxtbx = 2131034129;
+			
+			// aapt resource value: 0x7f050017
+			public const int ListAddBtn = 2131034135;
+			
+			// aapt resource value: 0x7f050016
+			public const int ListButtonsLayout = 2131034134;
+			
+			// aapt resource value: 0x7f050013
+			public const int ListEntryNameLbl = 2131034131;
+			
+			// aapt resource value: 0x7f050014
+			public const int ListEntryPopupBtn = 2131034132;
+			
+			// aapt resource value: 0x7f050037
+			public const int ListPopupMenuEditBtn = 2131034167;
+			
+			// aapt resource value: 0x7f050038
+			public const int ListPopupMenuRemoveBtn = 2131034168;
+			
+			// aapt resource value: 0x7f050015
+			public const int ListRecyclerView = 2131034133;
 			
 			// aapt resource value: 0x7f050006
 			public const int OpenRoundBtn = 2131034118;
 			
+			// aapt resource value: 0x7f050007
+			public const int OpenScoutMasterBtn = 2131034119;
+			
 			// aapt resource value: 0x7f050005
 			public const int OpenSettingsBtn = 2131034117;
 			
-			// aapt resource value: 0x7f05000a
-			public const int RefreshDevicesBtn = 2131034122;
+			// aapt resource value: 0x7f050023
+			public const int RedTeamSlot1 = 2131034147;
 			
-			// aapt resource value: 0x7f05001e
-			public const int RegisterScoutBtn = 2131034142;
+			// aapt resource value: 0x7f050024
+			public const int RedTeamSlot2 = 2131034148;
 			
-			// aapt resource value: 0x7f050013
-			public const int RoundDoneBtn = 2131034131;
+			// aapt resource value: 0x7f050025
+			public const int RedTeamSlot3 = 2131034149;
 			
-			// aapt resource value: 0x7f05000f
-			public const int RoundDoneBtnLayout = 2131034127;
+			// aapt resource value: 0x7f050034
+			public const int RefreshDevicesBtn = 2131034164;
 			
-			// aapt resource value: 0x7f050010
-			public const int RoundLinearLayout = 2131034128;
-			
-			// aapt resource value: 0x7f050008
-			public const int ScoutMasterTestBtn = 2131034120;
-			
-			// aapt resource value: 0x7f050009
-			public const int ScoutTestBtn = 2131034121;
-			
-			// aapt resource value: 0x7f05001b
-			public const int SettingsBlueOption = 2131034139;
-			
-			// aapt resource value: 0x7f050019
-			public const int SettingsColorLayout = 2131034137;
+			// aapt resource value: 0x7f050035
+			public const int RegisterScoutBtn = 2131034165;
 			
 			// aapt resource value: 0x7f05001c
-			public const int SettingsDevicesLayout = 2131034140;
-			
-			// aapt resource value: 0x7f05001d
-			public const int SettingsDevicesTxt = 2131034141;
-			
-			// aapt resource value: 0x7f05001f
-			public const int SettingsOKBtn = 2131034143;
-			
-			// aapt resource value: 0x7f050014
-			public const int SettingsOKBtnLayout = 2131034132;
-			
-			// aapt resource value: 0x7f05001a
-			public const int SettingsRedOption = 2131034138;
+			public const int RoundDoneBtn = 2131034140;
 			
 			// aapt resource value: 0x7f050018
-			public const int SettingsScoutMasterOption = 2131034136;
+			public const int RoundDoneBtnLayout = 2131034136;
 			
-			// aapt resource value: 0x7f050017
-			public const int SettingsScoutOption = 2131034135;
+			// aapt resource value: 0x7f050019
+			public const int RoundLinearLayout = 2131034137;
 			
-			// aapt resource value: 0x7f050016
-			public const int SettingsTypeGroup = 2131034134;
+			// aapt resource value: 0x7f050009
+			public const int SaveCurrentEventBtn = 2131034121;
 			
-			// aapt resource value: 0x7f050015
-			public const int SettingsTypeLayout = 2131034133;
+			// aapt resource value: 0x7f050020
+			public const int ScoutMasterNextBtn = 2131034144;
 			
-			// aapt resource value: 0x7f050022
-			public const int TeamAddBtn = 2131034146;
+			// aapt resource value: 0x7f05001f
+			public const int ScoutMasterPrevBtn = 2131034143;
+			
+			// aapt resource value: 0x7f05001e
+			public const int ScoutMasterRoundLbl = 2131034142;
+			
+			// aapt resource value: 0x7f05001d
+			public const int ScoutMasterRoundsLayout = 2131034141;
 			
 			// aapt resource value: 0x7f050021
-			public const int TeamButtonsLayout = 2131034145;
+			public const int ScoutMasterStartBtnLayout = 2131034145;
+			
+			// aapt resource value: 0x7f050029
+			public const int ScoutMasterStartRoundBtn = 2131034153;
+			
+			// aapt resource value: 0x7f050022
+			public const int ScoutMasterTeamsLayout = 2131034146;
+			
+			// aapt resource value: 0x7f05000a
+			public const int ScoutMasterTestBtn = 2131034122;
+			
+			// aapt resource value: 0x7f050031
+			public const int SettingsBlueOption = 2131034161;
+			
+			// aapt resource value: 0x7f05002f
+			public const int SettingsColorLayout = 2131034159;
+			
+			// aapt resource value: 0x7f050032
+			public const int SettingsDevicesLayout = 2131034162;
+			
+			// aapt resource value: 0x7f050033
+			public const int SettingsDevicesTxt = 2131034163;
+			
+			// aapt resource value: 0x7f050036
+			public const int SettingsOKBtn = 2131034166;
+			
+			// aapt resource value: 0x7f05002a
+			public const int SettingsOKBtnLayout = 2131034154;
+			
+			// aapt resource value: 0x7f050030
+			public const int SettingsRedOption = 2131034160;
+			
+			// aapt resource value: 0x7f05002e
+			public const int SettingsScoutMasterOption = 2131034158;
+			
+			// aapt resource value: 0x7f05002d
+			public const int SettingsScoutOption = 2131034157;
+			
+			// aapt resource value: 0x7f05002c
+			public const int SettingsTypeGroup = 2131034156;
+			
+			// aapt resource value: 0x7f05002b
+			public const int SettingsTypeLayout = 2131034155;
 			
 			// aapt resource value: 0x7f050004
 			public const int TeamChooseBtn = 2131034116;
 			
-			// aapt resource value: 0x7f050020
-			public const int TeamList = 2131034144;
-			
-			// aapt resource value: 0x7f050025
-			public const int TeamMenuEditBtn = 2131034149;
-			
-			// aapt resource value: 0x7f050026
-			public const int TeamMenuRemoveBtn = 2131034150;
-			
-			// aapt resource value: 0x7f050023
-			public const int TeamNameLbl = 2131034147;
-			
-			// aapt resource value: 0x7f050024
-			public const int TeamPopupBtn = 2131034148;
-			
-			// aapt resource value: 0x7f050012
-			public const int TeleOPLinearLayout = 2131034130;
+			// aapt resource value: 0x7f05001b
+			public const int TeleOPLinearLayout = 2131034139;
 			
 			// aapt resource value: 0x7f050000
 			public const int item_touch_helper_previous_elevation = 2131034112;
@@ -307,19 +361,25 @@ namespace MyScout.Android
 			public const int DebugLayout = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int EditTeamLayout = 2130903043;
+			public const int EditEventLayout = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int RoundLayout = 2130903044;
+			public const int EditTeamLayout = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int SettingsLayout = 2130903045;
+			public const int ListEntryLayout = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int TeamLayout = 2130903046;
+			public const int ListLayout = 2130903046;
 			
 			// aapt resource value: 0x7f030007
-			public const int TeamListEntryLayout = 2130903047;
+			public const int RoundLayout = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int ScoutMasterLayout = 2130903048;
+			
+			// aapt resource value: 0x7f030009
+			public const int SettingsLayout = 2130903049;
 			
 			static Layout()
 			{
@@ -335,7 +395,7 @@ namespace MyScout.Android
 		{
 			
 			// aapt resource value: 0x7f090000
-			public const int TeamPopupMenu = 2131296256;
+			public const int ListPopupMenu = 2131296256;
 			
 			static Menu()
 			{
