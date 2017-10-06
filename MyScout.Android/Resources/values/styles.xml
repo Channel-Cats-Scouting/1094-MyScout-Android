@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <style name="MyScoutTheme.Base" parent="Theme.AppCompat.NoActionBar">
+   <item name="colorPrimary">@color/Primary</item>
+   <item name="colorPrimaryDark">@color/StatusBar</item>
+   <item name="android:windowBackground">@color/BG</item>
+  </style>
+
+  <style name="MyScoutTheme" parent="MyScoutTheme.Base"/>
+</resources>

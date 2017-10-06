@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px"
-    android:theme="@android:style/Theme.Material">
+    android:theme="@style/MyScoutTheme">
+    <include layout="@layout/ToolbarLayout"/>
     <LinearLayout
         android:orientation="vertical"
         android:minHeight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_above="@+id/EditEventBtnLayout"
         android:layout_alignParentTop="true">
         <TextView

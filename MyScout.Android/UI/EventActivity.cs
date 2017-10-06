@@ -1,12 +1,13 @@
 ﻿using Android.App;
-using Android.OS;
+using Android.Util;
+using Android.Views;
 using System.Collections.Generic;
 using System.IO;
 
 namespace MyScout.Android.UI
 {
     [Activity(Label = "Choose an Event", MainLauncher = false,
-        Icon = "@drawable/icon", Theme = "@android:style/Theme.Material")]
+        Icon = "@drawable/icon", Theme = "@style/MyScoutTheme")]
     public class EventActivity : ListActivity<Event>
     {
         // Variables/Constants
@@ -60,17 +61,40 @@ namespace MyScout.Android.UI
             StartActivity(typeof(ScoutMasterActivity));
         }
 
-        // GUI Events
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnSearch(string query)
         {
-            base.OnCreate(bundle);
+            // TODO
+            Log.Debug("MyScout", $"Searched for: {query}");
+        }
 
-            // Change UI elements specific to this extension of ListActivity
-            itemAddBtn.Text = "Create Event";
+        // GUI Events
+        protected override void OnCreate()
+        {
+            base.OnCreate();
 
             // Setup List
             RefreshList();
             SetupList(Events, typeof(EditEventActivity));
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            base.OnCreateOptionsMenu(menu);
+            MenuInflater.Inflate(Resource.Menu.ToolbarSettingsMenu, menu);
+            return true;
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                // Settings
+                case Resource.Id.ToolbarSettingsBtn:
+                    StartActivity(typeof(SettingsActivity));
+                    return true;
+            }
+
+            return base.OnOptionsItemSelected(item);
         }
     }
 }

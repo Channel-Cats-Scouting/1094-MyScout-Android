@@ -1,5 +1,4 @@
 ﻿using Android.App;
-using Android.OS;
 using Android.Views;
 using Android.Widget;
 using System;
@@ -7,8 +6,8 @@ using System;
 namespace MyScout.Android.UI
 {
     [Activity(Label = "Settings", Icon = "@drawable/icon",
-        Theme = "@android:style/Theme.Material")]
-    public class SettingsActivity : Activity
+        Theme = "@style/MyScoutTheme")]
+    public class SettingsActivity : ToolbarActivity
     {
         // Variables/Constants
         public static bool IsFirstTimeSetup = false;
@@ -48,10 +47,9 @@ namespace MyScout.Android.UI
         }
 
         // GUI Events
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate()
         {
             // Setup GUI
-            base.OnCreate(bundle);
             SetContentView(Resource.Layout.SettingsLayout);
 
             // Assign local references to GUI elements

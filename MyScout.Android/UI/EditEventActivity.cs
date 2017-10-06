@@ -1,14 +1,13 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Widget;
 using System;
 
 namespace MyScout.Android.UI
 {
     [Activity(Label = "Edit Event", Icon = "@drawable/icon",
-        Theme = "@android:style/Theme.Material")]
-    public class EditEventActivity : Activity
+        Theme = "@style/MyScoutTheme")]
+    public class EditEventActivity : ToolbarActivity
     {
         // Variables/Constants
         protected EditText eventNameTxtbx;
@@ -16,10 +15,9 @@ namespace MyScout.Android.UI
         protected int eventIndex;
 
         // GUI Events
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate()
         {
             // Setup GUI
-            base.OnCreate(bundle);
             SetContentView(Resource.Layout.EditEventLayout);
 
             // Assign local references to GUI elements

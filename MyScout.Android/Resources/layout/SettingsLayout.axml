@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px"
-    android:theme="@android:style/Theme.Material">
+    android:theme="@style/MyScoutTheme">
+  <include layout="@layout/ToolbarLayout"/>
   <ScrollView
       android:layout_weight="0"
       android:minHeight="5dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_marginTop="?attr/actionBarSize"
       android:layout_above="@+id/SettingsOKBtnLayout"
       android:layout_alignParentTop="true">
     <LinearLayout
@@ -22,18 +24,20 @@
         android:minHeight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:id="@+id/SettingsTypeLayout">
         <TextView
           android:text="Tablet Type:"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="2dp" />
+          android:layout_marginTop="4dp" />
         <RadioGroup
             android:minWidth="25px"
             android:minHeight="100px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:orientation="vertical"
             android:id="@+id/SettingsTypeGroup">
           <RadioButton android:id="@+id/SettingsScoutOption"
@@ -57,12 +61,13 @@
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="2dp" />
+          android:layout_marginTop="4dp" />
         <RadioGroup
             android:minWidth="25px"
             android:minHeight="100px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:orientation="vertical">
           <RadioButton android:id="@+id/SettingsRedOption"
               android:layout_width="wrap_content"

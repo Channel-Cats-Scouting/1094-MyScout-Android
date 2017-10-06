@@ -1,14 +1,13 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Widget;
 using System;
 
 namespace MyScout.Android.UI
 {
     [Activity(Label = "Edit Team", Icon = "@drawable/icon",
-        Theme = "@android:style/Theme.Material")]
-    public class EditTeamActivity : Activity
+        Theme = "@style/MyScoutTheme")]
+    public class EditTeamActivity : ToolbarActivity
     {
         // Variables/Constants
         protected EditText teamIDTxtbx, teamNameTxtbx;
@@ -16,10 +15,9 @@ namespace MyScout.Android.UI
         protected int teamIndex;
 
         // GUI Events
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate()
         {
             // Setup GUI
-            base.OnCreate(bundle);
             SetContentView(Resource.Layout.EditTeamLayout);
 
             // Assign local references to GUI elements

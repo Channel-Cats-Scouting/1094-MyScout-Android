@@ -10,29 +10,29 @@ namespace MyScout.Android.UI
     {
         // Variables/Constants
         public Type EditItemActivity { get; protected set; }
+        public List<T> List;
         public override int ItemCount
         {
-            get => (list == null) ?
-                0 : list.Count;
+            get => (List == null) ?
+                0 : List.Count;
         }
 
         protected ListActivity<T> activity;
-        protected List<T> list;
-
+        
         // Constructors
         public ListAdapter(ListActivity<T> activity,
             List<T> data, Type editItemActivity)
         {
             this.activity = activity;
             EditItemActivity = editItemActivity;
-            list = data;
+            List = data;
         }
 
         // Methods
         public void Add(T item)
         {
-            list.Add(item);
-            NotifyItemInserted(list.Count - 1);
+            List.Add(item);
+            NotifyItemInserted(List.Count - 1);
         }
 
         public void Remove(ListEntryViewHolder<T> item)
@@ -45,7 +45,7 @@ namespace MyScout.Android.UI
         {
             // Remove the item at the given postion from the list and tell
             // Android we did so (so Android removes that item from the UI list, too).
-            list.RemoveAt(index);
+            List.RemoveAt(index);
             NotifyItemRemoved(index);
         }
 
@@ -70,7 +70,7 @@ namespace MyScout.Android.UI
             if (tvh == null)
                 return;
 
-            var item = list[position];
+            var item = List[position];
             tvh.Label.Text = GetTextForListItem(item);
         }
 

@@ -1,22 +1,23 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.OS;
+using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Support.V7.Widget.Helper;
-using Android.Widget;
+using Android.Views;
 using System;
 using System.Collections.Generic;
+
+using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace MyScout.Android.UI
 {
     [Activity(Label = "MyScout", MainLauncher = false,
-        Icon = "@drawable/icon", Theme = "@android:style/Theme.Material")]
-    public class ListActivity<T> : Activity
+        Icon = "@drawable/icon", Theme = "@style/MyScoutTheme")]
+    public class ListActivity<T> : ToolbarActivity
     {
         // Variables/Constants
         public ListAdapter<T> ListAdapter;
         protected RecyclerView list;
-        protected Button itemAddBtn;
 
         // Methods
         public virtual void OnItemClick(int position)
@@ -45,19 +46,16 @@ namespace MyScout.Android.UI
             itemTouchHelper.AttachToRecyclerView(list);
         }
 
+        protected virtual void OnSearch(string query) { }
+
         // GUI Events
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate()
         {
             // Setup GUI
-            base.OnCreate(bundle);
             SetContentView(Resource.Layout.ListLayout);
 
             // Assign local references to GUI elements
             list = FindViewById<RecyclerView>(Resource.Id.ListRecyclerView);
-            itemAddBtn = FindViewById<Button>(Resource.Id.ListAddBtn);
-
-            // Assign events to GUI elements
-            itemAddBtn.Click += ItemAddBtn_Click;
         }
 
         protected override void OnResume()
@@ -67,11 +65,47 @@ namespace MyScout.Android.UI
             base.OnResume();
         }
 
-        protected virtual void ItemAddBtn_Click(object sender, EventArgs e)
+        public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            // Open edit item dialog
-            var intent = new Intent(this, ListAdapter.EditItemActivity);
-            StartActivity(intent);
+            MenuInflater.Inflate(Resource.Menu.ToolbarListMenu, menu);
+
+            // Setup Search Bar
+            var searchManager = (SearchManager)GetSystemService(SearchService);
+            var searchView = menu.FindItem(
+                Resource.Id.ToolbarSearchBtn).ActionView.JavaCast<SearchView>();
+
+            searchView.SetSearchableInfo(
+                searchManager.GetSearchableInfo(ComponentName));
+
+            searchView.QueryTextChange += SearchView_QueryTextChange;
+
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                // Add
+                case Resource.Id.ToolbarAddItemBtn:
+                    var intent = new Intent(this, ListAdapter.EditItemActivity);
+                    StartActivity(intent);
+                    return true;
+
+                //// Search
+                //case Resource.Id.ToolbarSearchBtn:
+                //    // TODO
+                //    return true;
+            }
+
+            return base.OnOptionsItemSelected(item);
+        }
+
+        private void SearchView_QueryTextChange(
+            object sender, SearchView.QueryTextChangeEventArgs e)
+        {
+            OnSearch(e.NewText);
+            e.Handled = false;
         }
     }
 }
