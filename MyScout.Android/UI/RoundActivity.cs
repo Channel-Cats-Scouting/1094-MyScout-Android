@@ -1,14 +1,15 @@
 ﻿using Android.App;
-using Android.OS;
 using Android.Widget;
 using System;
 using System.Collections.Generic;
 
+using AppCompatTextView = Android.Support.V7.Widget.AppCompatTextView;
+
 namespace MyScout.Android.UI
 {
     [Activity(Label = "Round", Icon = "@drawable/icon",
-        Theme = "@android:style/Theme.Material")]
-    public class RoundActivity : Activity
+        Theme = "@style/MyScoutTheme")]
+    public class RoundActivity : ToolbarActivity
     {
         // Variables/Constants
         public static Team CurrentTeam;
@@ -16,10 +17,9 @@ namespace MyScout.Android.UI
         protected Button doneBtn;
 
         // GUI Events
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate()
         {
             // Setup GUI
-            base.OnCreate(bundle);
             SetContentView(Resource.Layout.RoundLayout);
 
             // Assign local references to GUI elements
@@ -79,8 +79,11 @@ namespace MyScout.Android.UI
             for (int layoutIndex = 0; layoutIndex < layout.ChildCount; ++layoutIndex)
             {
                 var view = layout.GetChildAt(layoutIndex);
-                if (view.GetType() == typeof(TextView))
+                if (view.GetType() == typeof(TextView) ||
+                    view.GetType() == typeof(AppCompatTextView))
+                {
                     continue;
+                }
 
                 // Get the appropriate data based on type
                 var type = dataPoints[++i].DataType;
@@ -101,24 +104,26 @@ namespace MyScout.Android.UI
                 {
                     // Numbers
                     var txtBx = (view as EditText);
-                    if (txtBx == null) continue;
+                    if (txtBx != null && !string.IsNullOrEmpty(txtBx.Text))
+                    {
+                        if (type == typeof(int))
+                        {
+                            data[i] = int.Parse(txtBx.Text);
+                            continue;
+                        }
+                        else if (type == typeof(float))
+                        {
+                            data[i] = float.Parse(txtBx.Text);
+                            continue;
+                        }
+                        else if (type == typeof(double))
+                        {
+                            data[i] = double.Parse(txtBx.Text);
+                            continue;
+                        }
+                    }
 
-                    if (type == typeof(int))
-                    {
-                        data[i] = int.Parse(txtBx.Text);
-                    }
-                    else if (type == typeof(float))
-                    {
-                        data[i] = float.Parse(txtBx.Text);
-                    }
-                    else if (type == typeof(double))
-                    {
-                        data[i] = double.Parse(txtBx.Text);
-                    }
-                    else
-                    {
-                        data[i] = 0;
-                    }
+                    data[i] = 0;
                 }
             }
 

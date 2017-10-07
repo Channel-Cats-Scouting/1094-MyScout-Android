@@ -3,6 +3,7 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using System;
+using System.Collections.Generic;
 
 namespace MyScout.Android
 {
@@ -32,9 +33,8 @@ namespace MyScout.Android
             }
             else
             {
-                bool isNumber = (DataType == typeof(byte) || DataType == typeof(int) ||
-                    DataType == typeof(float) || DataType == typeof(double) ||
-                    DataType == typeof(long));
+                bool isNumber = (DataType == typeof(int) ||
+                    DataType == typeof(float) || DataType == typeof(double));
 
                 bool isDecimal = (isNumber &&
                     (DataType == typeof(float) || DataType == typeof(double)));

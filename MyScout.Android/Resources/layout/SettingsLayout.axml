@@ -55,35 +55,6 @@
         android:minHeight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/SettingsColorLayout">
-        <TextView
-          android:text="Tablet Color:"
-          android:textAppearance="?android:attr/textAppearanceMedium"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp" />
-        <RadioGroup
-            android:minWidth="25px"
-            android:minHeight="100px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="vertical">
-          <RadioButton android:id="@+id/SettingsRedOption"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Red" />
-          <RadioButton android:id="@+id/SettingsBlueOption"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Blue" />
-        </RadioGroup>
-      </LinearLayout>
-      <LinearLayout
-        android:orientation="vertical"
-        android:minHeight="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/SettingsDevicesLayout">
         <TextView
             android:text="Devices:"

@@ -38,7 +38,7 @@
         android:minHeight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ScoutMasterStartBtnLayout"
+        android:layout_above="@+id/ScoutMasterButtonsLayout"
         android:layout_below="@+id/ScoutMasterRoundsLayout">
         <LinearLayout
             android:orientation="vertical"
@@ -100,11 +100,16 @@
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center|bottom"
-        android:id="@+id/ScoutMasterStartBtnLayout"
+        android:id="@+id/ScoutMasterButtonsLayout"
         android:minHeight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
+        <Button
+            android:text="Export CSV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ScoutMasterExportBtn" />
         <Button
             android:text="Start Round"
             android:layout_width="match_parent"

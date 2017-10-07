@@ -18,11 +18,11 @@ namespace MyScout.Android
         }
 
         public static TabletTypes TabletType;
-        public static AllianceColors TabletColor;
         public static bool Loaded = false;
 
         public const string FileName = "Config.bin";
-        public const byte MajorVersion = 1, MinorVersion = 0;
+        private const string Signature = "CFG";
+        private const byte Version = 1;
 
         // Methods
         public static bool Load()
@@ -35,20 +35,17 @@ namespace MyScout.Android
             using (var fileStream = File.OpenRead(filePath))
             using (var reader = new ExtendedBinaryReader(fileStream))
             {
-                // Read version number
-                byte majorVersion = reader.ReadByte();
-                byte minorVersion = reader.ReadByte();
-
-                // Make sure the version number from this config file is supported
-                if (!IO.IsVersionOK(majorVersion, minorVersion,
-                    MajorVersion, MinorVersion))
-                {
+                // Read header
+                string sig = reader.ReadSignature(3);
+                if (sig != Signature)
                     return false;
-                }
+
+                byte version = reader.ReadByte();
+                if (Version < version)
+                    return false;
 
                 // Read config values
                 TabletType = (TabletTypes)reader.ReadByte();
-                TabletColor = (AllianceColors)reader.ReadByte();
 
                 // Read registered devices
                 ushort devicesCount = reader.ReadUInt16();
@@ -70,13 +67,12 @@ namespace MyScout.Android
             using (var fileStream = File.OpenWrite(FilePath))
             using (var writer = new ExtendedBinaryWriter(fileStream))
             {
-                // Write version number
-                writer.Write(MajorVersion);
-                writer.Write(MinorVersion);
+                // Write header
+                writer.WriteSignature(Signature);
+                writer.Write(Version);
 
                 // Write config values
                 writer.Write((byte)TabletType);
-                writer.Write((byte)TabletColor);
 
                 // Write registered devices
                 writer.Write((ushort)RegisteredDevices.Count);
@@ -91,11 +87,6 @@ namespace MyScout.Android
         public enum TabletTypes
         {
             Scout, ScoutMaster
-        }
-
-        public enum AllianceColors
-        {
-            Red, Blue
         }
     }
 }

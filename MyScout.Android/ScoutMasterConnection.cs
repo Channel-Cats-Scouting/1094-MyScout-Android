@@ -125,9 +125,6 @@ namespace MyScout.Android
             {
                 var point = dataSet.RoundAutoData[i];
                 teamData.AutoData[i] = reader.ReadByType(point.DataType);
-
-                // TODO: Remove this line
-                Log.Debug("MyScout", $"Auto Data #{i}: {teamData.AutoData[i].ToString()}");
             }
 
             // Get Tele-OP Round Data
@@ -136,22 +133,7 @@ namespace MyScout.Android
             {
                 var point = dataSet.RoundTeleOPData[i];
                 teamData.TeleOPData[i] = reader.ReadByType(point.DataType);
-
-                // TODO: Remove this line
-                Log.Debug("MyScout", $"Tele-OP Data #{i}: {teamData.TeleOPData[i].ToString()}");
             }
-
-            // TODO: Remove this debug code
-            Log.Debug("MyScout", "Received Round Data!");
-
-            // Go to the next round automatically if there is one
-            if (Event.Current.CurrentRoundIndex < Event.Current.Rounds.Count - 1)
-            {
-                ++Event.Current.CurrentRoundIndex;
-            }
-
-            // Save the current event
-            Event.Current.Save();
 
             // Update the Scout Master UI
             UpdateScoutMasterUI();

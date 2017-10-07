@@ -53,6 +53,75 @@ namespace MyScout.Android
                 evnt : null;
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public void ExportCSV(string filePath)
+        {
+            using (var fs = File.Create(filePath))
+            {
+                ExportCSV(fs);
+            }
+        }
+
+        public void ExportCSV(Stream fileStream)
+        {
+            var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
+            var autoInfo = new object[DataSet.Current.RoundAutoData.Count];
+            var teleOPInfo = new object[DataSet.Current.RoundTeleOPData.Count];
+
+            // Team Column
+            writer.Write("Team ID");
+
+            // Data Point Columns
+            for (int i = 0; i < DataSet.Current.RoundAutoData.Count; ++i)
+            {
+                WriteColumn(DataSet.Current.RoundAutoData[i]);
+            }
+
+            for (int i = 0; i < DataSet.Current.RoundTeleOPData.Count; ++i)
+            {
+                WriteColumn(DataSet.Current.RoundTeleOPData[i]);
+            }
+
+            writer.WriteLine();
+
+            // Rows
+            foreach (var team in Teams)
+            {
+                // Write Team ID
+                writer.Write(team.ID);
+
+                // Generate Round Data
+                var totals = DataSet.Current.ComputeTotals(Rounds, team, out int[] pointCounts);
+                var averages = DataSet.ComputeAverages(totals, pointCounts);
+
+                // Write Round Data
+                DataSet.Current.WriteDataSheetRow(writer, totals, averages);
+                writer.WriteLine();
+            }
+
+            writer.Close();
+
+            // Sub-Methods
+            void WriteColumn(DataPoint point)
+            {
+                var type = point.DataType;
+                if (type == typeof(int) ||
+                    type == typeof(float) || type == typeof(double))
+                {
+                    writer.Write($",Total {point.Name}");
+                    writer.Write($",Avg {point.Name}");
+                }
+                else
+                {
+                    writer.Write($",{point.Name}");
+                }
+            }
+        }
+
         public void Load(int index)
         {
             // Get the event's file path
@@ -251,11 +320,6 @@ namespace MyScout.Android
                     }
                 }
             }
-        }
-
-        public override string ToString()
-        {
-            return Name;
         }
 
         protected bool LoadHeaderData(Stream fileStream)

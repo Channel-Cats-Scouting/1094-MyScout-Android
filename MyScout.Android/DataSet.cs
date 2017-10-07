@@ -19,6 +19,156 @@ namespace MyScout.Android
         public const float MaxSupportedVersion = 1.0f;
 
         // Methods
+        public float[] ComputeTotals(List<Round> rounds,
+            Team team, out int[] pointCounts)
+        {
+            var totals = new float[RoundAutoData.Count + RoundTeleOPData.Count];
+            var counts = new int[totals.Length];
+
+            foreach (var round in rounds)
+            {
+                foreach (var teamData in round.TeamData)
+                {
+                    if (teamData == null || teamData.Team != team)
+                        continue;
+
+                    // Autonomous
+                    int autoPointCount = RoundAutoData.Count;
+                    if (teamData.AutoData != null)
+                    {
+                        for (int i = 0; i < autoPointCount; ++i)
+                        {
+                            ComputeTotal(teamData.AutoData[i],
+                                RoundAutoData[i].DataType, i);
+                        }
+                    }
+
+                    // Tele-OP
+                    if (teamData.TeleOPData != null)
+                    {
+                        for (int i = 0; i < RoundTeleOPData.Count; ++i)
+                        {
+                            ComputeTotal(teamData.TeleOPData[i],
+                                RoundTeleOPData[i].DataType, i + autoPointCount);
+                        }
+                    }
+                }
+            }
+
+            pointCounts = counts;
+            return totals;
+
+            // Sub-Methods
+            void ComputeTotal(object data, Type type, int i)
+            {
+                // Booleans
+                if (type == typeof(bool))
+                {
+                    if ((bool)data)
+                        ++totals[i];
+                }
+
+                // Numbers
+                else if (type == typeof(int) || type == typeof(float) ||
+                    type == typeof(double))
+                {
+                    totals[i] += Convert.ToSingle(data);
+                }
+                else return;
+
+                ++counts[i];
+            }
+        }
+
+        public static float[] ComputeAverages(float[] totals, int[] counts)
+        {
+            if (totals.Length != counts.Length)
+                throw new Exception("The given total/count arrays have unequal lengths!");
+
+            var averages = new float[totals.Length];
+            for (int i = 0; i < averages.Length; ++i)
+            {
+                averages[i] = (totals[i] / counts[i]);
+            }
+
+            return averages;
+        }
+
+        public void WriteDataSheetRow(StreamWriter writer,
+            float[] totals, float[] averages)
+        {
+            if (totals.Length != averages.Length)
+                throw new Exception("The given total/average arrays have unequal lengths!");
+
+            // Autonomous
+            int autoPointCount = RoundAutoData.Count;
+            for (int i = 0; i < autoPointCount; ++i)
+            {
+                WriteDataPoint(RoundAutoData[i].DataType, i);
+            }
+
+            // Tele-OP
+            for (int i = 0; i < RoundTeleOPData.Count; ++i)
+            {
+                WriteDataPoint(RoundTeleOPData[i].DataType, i + autoPointCount);
+            }
+
+            // Sub-Methods
+            void WriteDataPoint(Type type, int i)
+            {
+                // Booleans
+                if (type == typeof(bool))
+                {
+                    writer.Write($",{(int)(averages[i] * 100)}%");
+                }
+
+                // Numbers
+                else if (type == typeof(int) ||
+                    type == typeof(float) || type == typeof(double))
+                {
+                    writer.Write($",{totals[i]}");
+                    writer.Write($",{averages[i]}");
+                }
+
+                // Other
+                else
+                {
+                    writer.Write(",");
+                }
+            }
+        }
+
+        public static Type GetDataType(string type)
+        {
+            // Returns a System.Type from a string
+            // Supports booleans, strings, and some primitive number types
+            // Nothing else is needed for DataPoints
+            switch (type.ToLower())
+            {
+                case "bool":
+                case "boolean":
+                    return typeof(bool);
+
+                case "int":
+                case "integer":
+                case "int32":
+                case "sint32":
+                    return typeof(int);
+
+                case "float":
+                case "single":
+                    return typeof(float);
+
+                case "double":
+                    return typeof(double);
+
+                case "string":
+                    return typeof(string);
+            }
+
+            return null;
+        }
+
         public void Load(string filePath)
         {
             using (var fs = File.OpenRead(filePath))
@@ -29,6 +179,7 @@ namespace MyScout.Android
 
         public void Load(Stream fileStream, string defaultName = null)
         {
+            // TODO: Optimize this method
             // Get root attributes
             var xml = XDocument.Load(fileStream);
             var root = xml.Root;
@@ -82,37 +233,6 @@ namespace MyScout.Android
                 // Make data point from loaded information and add it to the given list
                 pointList.Add(new DataPoint(nameAttr.Value, type));
             }
-        }
-
-        public static Type GetDataType(string type)
-        {
-            // Returns a System.Type from a string
-            // Supports booleans, strings, and some primitive number types
-            // Nothing else is needed for DataPoints
-            switch (type.ToLower())
-            {
-                case "bool":
-                case "boolean":
-                    return typeof(bool);
-
-                case "int":
-                case "integer":
-                case "int32":
-                case "sint32":
-                    return typeof(int);
-
-                case "float":
-                case "single":
-                    return typeof(float);
-
-                case "double":
-                    return typeof(double);
-
-                case "string":
-                    return typeof(string);
-            }
-
-            return null;
         }
 
         public void FillPreScoutGUI(LinearLayout layout)

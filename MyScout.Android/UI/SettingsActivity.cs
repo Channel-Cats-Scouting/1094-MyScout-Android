@@ -11,9 +11,9 @@ namespace MyScout.Android.UI
     {
         // Variables/Constants
         public static bool IsFirstTimeSetup = false;
-        protected LinearLayout typeLayout, colorLayout, devicesLayout;
+        protected LinearLayout typeLayout, devicesLayout;
         protected RadioGroup typeGroup, devicesGroup;
-        protected RadioButton scoutOption, scoutMasterOption, redOption, blueOption;
+        protected RadioButton scoutOption, scoutMasterOption;
         protected Button okBtn, refreshDevicesBtn, registerScoutBtn;
         protected TextView devicesTxt;
 
@@ -35,14 +35,14 @@ namespace MyScout.Android.UI
             if (scoutMasterOption.Checked)
             {
                 devicesTxt.Text = "Register Scouts:";
-                colorLayout.Visibility = ViewStates.Gone;
                 registerScoutBtn.Visibility = ViewStates.Visible;
+                okBtn.Enabled = true;
             }
             else
             {
                 devicesTxt.Text = "Scout Master Tablet:";
-                colorLayout.Visibility = ViewStates.Visible;
                 registerScoutBtn.Visibility = ViewStates.Gone;
+                okBtn.Enabled = (devicesGroup.CheckedRadioButtonId >= 0);
             }
         }
 
@@ -58,10 +58,6 @@ namespace MyScout.Android.UI
             scoutOption = FindViewById<RadioButton>(Resource.Id.SettingsScoutOption);
             scoutMasterOption = FindViewById<RadioButton>(Resource.Id.SettingsScoutMasterOption);
 
-            colorLayout = FindViewById<LinearLayout>(Resource.Id.SettingsColorLayout);
-            redOption = FindViewById<RadioButton>(Resource.Id.SettingsRedOption);
-            blueOption = FindViewById<RadioButton>(Resource.Id.SettingsBlueOption);
-
             devicesLayout = FindViewById<LinearLayout>(Resource.Id.SettingsDevicesLayout);
             devicesTxt = FindViewById<TextView>(Resource.Id.SettingsDevicesTxt);
             devicesGroup = FindViewById<RadioGroup>(Resource.Id.BluetoothDevicesGroup);
@@ -76,20 +72,20 @@ namespace MyScout.Android.UI
             registerScoutBtn.Click += RegisterScoutBtn_Click;
             okBtn.Click += OkBtn_Click;
 
-            // Load config file if not already loaded
-            if (!Config.Loaded)
-                Config.Load();
-
             // Change GUI elements to match settings
             if (IsFirstTimeSetup)
             {
                 Title = "First-Time Setup";
             }
 
+            // Load config file if not already loaded
+            else if (!Config.Loaded)
+            {
+                Config.Load();
+            }
+
             scoutOption.Checked = (Config.TabletType == Config.TabletTypes.Scout);
             scoutMasterOption.Checked = (Config.TabletType == Config.TabletTypes.ScoutMaster);
-            redOption.Checked = (Config.TabletColor == Config.AllianceColors.Red);
-            blueOption.Checked = (Config.TabletColor == Config.AllianceColors.Blue);
             UpdateUI();
         }
 
@@ -104,6 +100,7 @@ namespace MyScout.Android.UI
         {
             // Enable the register scout button ONLY if a device is selected
             registerScoutBtn.Enabled = (e.CheckedId >= 0);
+            okBtn.Enabled = (scoutMasterOption.Checked || registerScoutBtn.Enabled);
         }
 
         private void RefreshBtn_Click(object sender, EventArgs e)
@@ -156,9 +153,6 @@ namespace MyScout.Android.UI
             bool isScoutMaster = scoutMasterOption.Checked;
             Config.TabletType = (isScoutMaster) ?
                 Config.TabletTypes.ScoutMaster : Config.TabletTypes.Scout;
-
-            Config.TabletColor = (redOption.Checked) ?
-                Config.AllianceColors.Red : Config.AllianceColors.Blue;
 
             // Register scout master if this is a scout tablet
             if (!isScoutMaster)

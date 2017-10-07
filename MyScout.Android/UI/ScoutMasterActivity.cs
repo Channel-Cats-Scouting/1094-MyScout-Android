@@ -2,8 +2,10 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Widget;
 using System;
+using System.IO;
 
 namespace MyScout.Android.UI
 {
@@ -16,7 +18,7 @@ namespace MyScout.Android.UI
         public static int WaitingOnScouts = 0;
 
         protected Button[] teamSlots;
-        protected Button prevBtn, nextBtn, startRoundBtn;
+        protected Button prevBtn, nextBtn, exportBtn, startRoundBtn;
         protected TextView roundLbl;
         protected const int GET_TEAM_REQUEST = 0;
         private static int teamSlotEditIndex;
@@ -27,9 +29,27 @@ namespace MyScout.Android.UI
             if (WaitingOnScouts > 0)
             {
                 startRoundBtn.Text = $"Waiting on {WaitingOnScouts} scout(s)...";
+                startRoundBtn.Enabled = false;
             }
             else
             {
+                // Perform end-of-round actions
+                if (!startRoundBtn.Enabled)
+                {
+                    // Go to the next round automatically if there is one
+                    if (Event.Current.CurrentRoundIndex < Event.Current.Rounds.Count - 1)
+                    {
+                        ++Event.Current.CurrentRoundIndex;
+                    }
+
+                    // Save the current event
+                    // TODO: Do this on another thread
+                    Event.Current.Save();
+
+                    Toast.MakeText(this, "Event Saved.",
+                        ToastLength.Short).Show();
+                }
+
                 // Enable everything
                 prevBtn.Enabled = nextBtn.Enabled = startRoundBtn.Enabled = true;
 
@@ -46,9 +66,8 @@ namespace MyScout.Android.UI
                 // Update start round button
                 startRoundBtn.Text = "Start Round";
                 // TODO: Update text on start round button to say "Redo Round"
+                startRoundBtn.Enabled = ShouldEnableStartRoundBtn();
             }
-
-            startRoundBtn.Enabled = ShouldEnableStartRoundBtn();
         }
 
         public void UpdateTeamSlots()
@@ -112,6 +131,7 @@ namespace MyScout.Android.UI
             teamSlots[4] = FindViewById<Button>(Resource.Id.BlueTeamSlot2);
             teamSlots[5] = FindViewById<Button>(Resource.Id.BlueTeamSlot3);
 
+            exportBtn = FindViewById<Button>(Resource.Id.ScoutMasterExportBtn);
             startRoundBtn = FindViewById<Button>(Resource.Id.ScoutMasterStartRoundBtn);
 
             // Assign events to GUI elements
@@ -123,6 +143,7 @@ namespace MyScout.Android.UI
                 btn.Click += TeamSlot_Click;
             }
 
+            exportBtn.Click += ExportBtn_Click;
             startRoundBtn.Click += StartRoundBtn_Click;
 
             // Update GUI Elements
@@ -155,6 +176,8 @@ namespace MyScout.Android.UI
             // TODO: Ask user if they would like to save the event
             Event.Current.Save();
 
+            Instance = null;
+            Event.Current = null;
             Finish();
         }
 
@@ -191,6 +214,20 @@ namespace MyScout.Android.UI
             teamSlotEditIndex = slotID;
             StartActivityForResult(
                 typeof(TeamActivity), GET_TEAM_REQUEST);
+        }
+
+        protected void ExportBtn_Click(object sender, EventArgs e)
+        {
+            // TODO: Make this happen on another thread
+            string dataSheetDir = Path.Combine(IO.ExternalDataDirectory, "DataSheets");
+            Directory.CreateDirectory(dataSheetDir);
+
+            string filePath = Path.Combine(dataSheetDir,
+                $"Event{Event.Current.Index}.csv");
+            Event.Current.ExportCSV(filePath);
+
+            Toast.MakeText(this, $"Exported CSV to \"{filePath}\"",
+                ToastLength.Long).Show();
         }
 
         protected void StartRoundBtn_Click(object sender, EventArgs e)

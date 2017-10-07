@@ -25,7 +25,6 @@ namespace MyScout.Android
         // Constructors
         public ScoutConnection(BluetoothAdapter adapter)
         {
-            // TODO: Only accept connections from the registered scout master
             serverSocket = adapter.ListenUsingRfcommWithServiceRecord(
                 "MyScout_Scout", MyScoutUUID);
         }
@@ -53,12 +52,21 @@ namespace MyScout.Android
 
         protected override bool Connect()
         {
-            // Accept any incoming connection requests
             while (socket == null)
             {
                 try
                 {
+                    // Accept incoming connection requests and ensure the
+                    // accepted connection is from the registered scout master
                     socket = serverSocket.Accept();
+
+                    if (Config.RegisteredDevices.Count < 1 ||
+                        socket.RemoteDevice.Address != Config.RegisteredDevices[0])
+                    {
+                        CloseSocket();
+                        return false;
+                    }
+
                     reader = new ExtendedBinaryReader(socket.InputStream);
                     writer = new ExtendedBinaryWriter(socket.OutputStream);
                     return true;

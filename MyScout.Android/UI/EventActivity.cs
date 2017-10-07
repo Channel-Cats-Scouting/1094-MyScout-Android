@@ -1,5 +1,4 @@
 ﻿using Android.App;
-using Android.Util;
 using Android.Views;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +37,7 @@ namespace MyScout.Android.UI
         {
             Event.Current = Events[position];
 
+            // TODO: Put this and event loading on another thread
             // Load the DataSet used by the selected event
             var dataSet = new DataSet();
             var dataSetPath = Path.Combine(
@@ -64,7 +64,7 @@ namespace MyScout.Android.UI
         protected override void OnSearch(string query)
         {
             // TODO
-            Log.Debug("MyScout", $"Searched for: {query}");
+            //Log.Debug("MyScout", $"Searched for: {query}");
         }
 
         // GUI Events
